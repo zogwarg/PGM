@@ -45,8 +45,8 @@ public class Loader {
         return format.matcher(preParsedLine).matches();
     }
 
-    public PGM loadPGM() {
-        if (!this.IsBasicValid()) throw new Error("There are errors in the format of the P2 PGM");
+    public PGM loadPGM() throws InvalidDataException {
+        if (!this.IsBasicValid()) throw new InvalidDataException("There are errors in the format of the P2 PGM");
 
         String[] content = preParsedLine.split(" ");
 
@@ -55,8 +55,10 @@ public class Loader {
         int maxVal = Integer.parseInt(content[3]);
 
         if(maxVal<0 || maxVal>255) throw new Error("Max Value should be between 0 and 255");
+        if(maxVal<0 || maxVal>255) throw new InvalidDataException("Max Value should be between 0 and 255");
 
         if(content.length != width * height + 4) throw new Error("Incorrect number of pixel values");
+        if(content.length != width * height + 4) throw new InvalidDataException("Incorrect number of pixel values");
 
         int[][] pixelValues;
 
