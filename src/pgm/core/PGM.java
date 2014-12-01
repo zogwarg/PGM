@@ -208,6 +208,8 @@ public class PGM {
      */
     @Override
     public String toString() {
+        int charWritten = 0;
+
         String out = "P2\n";
         out += "# Generated with our super program\n";
         out += Integer.toString(width) + " " + Integer.toString(height) + "\n";
@@ -215,10 +217,20 @@ public class PGM {
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                out += Integer.toString(pixelValues[i][j]) + " ";
-                if (i+j%17 == 16) { // Only 17 values by lines, to be sure we cannot have more than 70 caracters by lines
+                if (pixelValues[i][j] > 99) {
+                    charWritten += 4;
+                } else if (pixelValues[i][j] > 9) {
+                    charWritten += 3;
+                } else {
+                    charWritten += 2;
+                }
+
+                if (charWritten >= 70) {
+                    charWritten = 0;
                     out += "\n";
                 }
+
+                out += Integer.toString(pixelValues[i][j]) + " ";
             }
         }
 
