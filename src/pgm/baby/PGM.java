@@ -24,17 +24,43 @@ public class PGM {
     }
 
     /**
-     * Make an histogramm from the current PGM
-     * @return number of occurences of each grayscale between 0 and maxVal-1
+     * Get an histogram values from the current PGM
+     * @return number of occurences of each grayscale between 0 and maxVal
      */
-    public int[] histogram() {
-        int[] hist = new int[this.maxVal];
+    public int[] histogramValues() {
+        int[] hist = new int[this.maxVal+1];
         for (int[] row : pixelValues) {
             for(int pixel : row) {
                 hist[pixel]++;
             }
         }
         return hist;
+    }
+
+    /**
+     * Getting the histogram in a PGM form
+     * @return PGM with the histogram
+     */
+    public PGM histogram() {
+        int[] values = histogramValues();
+        int height = 1;
+        for (int v: values) { // Looking for the maximum value in histogram
+            if (v > height) {
+                height = v;
+            }
+        }
+        int width = values.length; // The width of the histogram is the number of grayscales
+
+        int[][] newPixelValues = new int[height][width];
+        for (int j = 0; j < width; j++) {
+            for (int i = 0; i < height; i++) {
+                if (i >= height-values[j]) {
+                    newPixelValues[i][j] = 1;
+                }
+            }
+        }
+
+        return new PGM(width, height, 1, newPixelValues);
     }
 
     /**
