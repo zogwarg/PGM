@@ -5,8 +5,8 @@ package pgm.core;
  */
 public class Test {
     public static void main(String[] args) {
-        GUI gui = new GUI(640, 320);
-        PGM pgm = null;
+
+        /*PGM pgm = null;
         try {
             System.out.println("Opening file obama.pgm");
             Loader loader = new Loader("obama.pgm");
