@@ -6,7 +6,7 @@ package pgm.core;
 public class Test {
     public static void main(String[] args) {
 
-        /*PGM pgm = null;
+        PGM pgm = null;
         try {
             System.out.println("Opening file obama.pgm");
             Loader loader = new Loader("obama.pgm");
@@ -21,7 +21,7 @@ public class Test {
             pgm.histogram().save("histogram.pgm");
         }
 
-        System.out.println("Done.");*/
+        System.out.println("Done.");
 
         GUI gui = new GUI(640, 320);
         gui.setVisible(true);
