@@ -27,22 +27,27 @@ public class PGM {
     }
 
     public PGM threshold(int thresh) {
-        int[][] newPixelValues = new int[this.height][this.width];
-        for (int i = 0; i < this.height; i++) {
-            for(int j=0; j< this.width; j++) {
-                // todo > / >=
-                if (this.pixelValues[i][j] > thresh) {
-                    newPixelValues[i][j] = 1;
+        int[][] newPixelValues = new int[height][width];
+        for (int i = 0; i < height; i++) {
+            for(int j=0; j< width; j++) {
+                if (pixelValues[i][j] >= thresh) {
+                    newPixelValues[i][j] = maxVal;
                 }
             }
         }
-        return new PGM(this.width, this.height, 1, newPixelValues);
+        return new PGM(width, height, maxVal, newPixelValues);
     }
 
     public PGM minus(PGM that) {
-        if (this.height != that.height || this.width != that.width || this.maxVal != that.maxVal) {
+        if (height != that.height || width != that.width || maxVal != that.maxVal) {
             throw new UnsupportedOperationException("image parameters must match");
         }
-        
+        int[][] newPixelValues = new int[height][width];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                newPixelValues[i][j] = Math.abs(pixelValues[i][j]-that.pixelValues[i][j]);
+            }
+        }
+        return new PGM(width, height, maxVal, newPixelValues);
     }
 }
