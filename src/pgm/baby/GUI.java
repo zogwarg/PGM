@@ -23,6 +23,8 @@ public class GUI extends JFrame {
     private JMenuItem jFilterThreshold;
     private JMenuItem jFilterThresholdMean;
     private JMenuItem jFilterThresholdMedian;
+    private JMenu jMenuAbout;
+    private JMenuItem jAboutInfo;
 
     GUI(int w, int h) {
         this.height = h;
@@ -96,10 +98,74 @@ public class GUI extends JFrame {
             }
         });
 
+        // Menu File
+        jMenuFilter = new JMenu("Apply filter");
+
+        // Histogram
+        jFilterHistogram = new JMenuItem("Histogram");
+        jFilterHistogram.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO apply and open histogram
+            }
+        });
+
+        // Threshold
+        jFilterThreshold = new JMenuItem("Threshold");
+        jFilterThreshold.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO ask for value and apply and open Treshsold
+            }
+        });
+
+        // Mean Threshold
+        jFilterThresholdMean = new JMenuItem("Mean Threshold");
+        jFilterThresholdMean.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO apply and open Mean Treshsold
+            }
+        });
+
+        // Median Threshold
+        jFilterThresholdMedian = new JMenuItem("Median Threshold");
+        jFilterThresholdMedian.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO apply and open Median Treshsold
+            }
+        });
+
+        // About menu
+        jMenuAbout = new JMenu("About");
+        jAboutInfo = new JMenuItem("Informations");
+        jAboutInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(GUI.this, "Thomas BUICK, Thomas DURAND et Loic MOLLET-PADIER\nVersion 0.3.14", "Informations", JOptionPane.PLAIN_MESSAGE);
+            }
+        });
+
+        // Adding items to file menu
         jMenuFile.add(jFileOpen);
         jMenuFile.add(jFileSave);
         jMenuFile.add(jFileExit);
+
+        // Adding items to filters menu
+        jMenuFilter.add(jFilterHistogram);
+        jMenuFilter.add(jFilterThreshold);
+        jMenuFilter.add(jFilterThresholdMean);
+        jMenuFilter.add(jFilterThresholdMedian);
+
+        // Adding items to about menu
+        jMenuAbout.add(jAboutInfo);
+
+        // Adding Menus to Bar
         jMenuBar.add(jMenuFile);
+        jMenuBar.add(jMenuFilter);
+        jMenuBar.add(jMenuAbout);
+
         // Ajout du menu a la JFrame
         setJMenuBar(jMenuBar);
     }
