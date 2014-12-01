@@ -31,7 +31,7 @@ public class Loader {
         preParsedLine=Pattern.compile("\\s+").matcher(preParsedLine).replaceAll(" ");
         preParsedLine=Pattern.compile(" $").matcher(preParsedLine).replaceAll("");
 
-        System.out.println(preParsedLine);
+        //System.out.println(preParsedLine);
     }
 
     public boolean IsBasicValid() {
