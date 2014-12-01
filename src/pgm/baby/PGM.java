@@ -1,5 +1,9 @@
 package pgm.baby;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -123,7 +127,7 @@ public class PGM {
     public int medianValue() {
         List<Integer> pixelList = getPixelList();
         Collections.sort(pixelList);
-        return pixelList.get(Math.floorDiv(pixelList.size(),2));
+        return pixelList.get(Math.floorDiv(pixelList.size(), 2));
     }
 
     /**
@@ -138,5 +142,30 @@ public class PGM {
             }
         }
         return pixelList;
+    }
+
+    public void save(String filename) {
+        BufferedWriter bufferedWriter = null;
+        try{
+            // Creation du BufferedWriter
+            bufferedWriter = new BufferedWriter(new FileWriter(filename));
+
+            // On ecrit dans le fichier
+            // TODO ecrire le fichier PGM
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bufferedWriter != null) {
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
