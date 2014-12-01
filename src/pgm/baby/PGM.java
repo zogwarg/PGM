@@ -2,6 +2,7 @@ package pgm.baby;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by loic on 01/12/14.
@@ -101,6 +102,10 @@ public class PGM {
         return new PGM(width, height, maxVal, newPixelValues);
     }
 
+    /**
+     * Get the mean value of the pixels of a PGM image
+     * @return the mean value
+     */
     public int meanValue() {
         int sum = 0;
         for (int[] row : pixelValues) {
@@ -111,14 +116,27 @@ public class PGM {
         return Math.floorDiv(sum, width * height);
     }
 
+    /**
+     * Get the median value of the pixels of a PGM image
+     * @return the median value
+     */
     public int medianValue() {
-        ArrayList<Integer> pixelList = new ArrayList<Integer>();
+        List<Integer> pixelList = getPixelList();
+        Collections.sort(pixelList);
+        return pixelList.get(Math.floorDiv(pixelList.size(),2));
+    }
+
+    /**
+     * Get all the pixels of the image as a flat List
+     * @return the list of all elements in the image
+     */
+    private List<Integer> getPixelList() {
+        List<Integer> pixelList = new ArrayList<Integer>();
         for (int[] row : pixelValues) {
             for(int pixel : row) {
-                pixelList.add(new Integer(pixel));
+                pixelList.add(pixel);
             }
         }
-        Collections.sort(pixelList);
-        return pixelList.get(Math.floorDiv(pixelList.size(),2)).intValue();
+        return pixelList;
     }
 }
