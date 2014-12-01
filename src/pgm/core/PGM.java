@@ -225,7 +225,7 @@ public class PGM {
                     charWritten += 2;
                 }
 
-                if (charWritten >= 70) {
+                if (charWritten > 70) {
                     charWritten = 0;
                     out += "\n";
                 }
