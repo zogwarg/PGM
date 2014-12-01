@@ -21,6 +21,10 @@ public class Test {
             pgm.histogram().save("histogram.pgm");
         }
 
-        System.out.println("Done.");
+        System.out.println("Done.");*/
+
+        GUI gui = new GUI(640, 320);
+        gui.setVisible(true);
+
     }
 }
