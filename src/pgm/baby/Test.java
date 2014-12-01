@@ -3,7 +3,7 @@ package pgm.baby;
 /**
  * Created by Thomas on 12/1/2014.
  */
-public class GUI {
+public class Test {
     public static void main(String[] args) {
         Loader loader = new Loader("Test.txt");
     }
