@@ -47,10 +47,8 @@ public class Loader {
         int height = Integer.parseInt(content[2]);
         int maxVal = Integer.parseInt(content[3]);
 
-        if(maxVal<0 || maxVal>255) throw new Error("Max Value should be between 0 and 255");
         if(maxVal<0 || maxVal>255) throw new InvalidDataException("Max Value should be between 0 and 255");
 
-        if(content.length != width * height + 4) throw new Error("Incorrect number of pixel values");
         if(content.length != width * height + 4) throw new InvalidDataException("Incorrect number of pixel values");
 
         int[][] pixelValues;
