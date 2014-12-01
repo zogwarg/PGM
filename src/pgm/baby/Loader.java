@@ -52,13 +52,16 @@ public class Loader {
 
         if(content.length != width * height + 4) throw new InvalidDataException("Incorrect number of pixel values");
 
-        int[][] pixelValues;
+        int[][] pixelValues= new int[width][height];
 
-        //TODO Fill pixel Values
+        for(int i=4; i<content.length ; i++) {
+            int j = i-4;
+            int currentVal = Integer.parseInt(content[i]);
+            if (currentVal<0 || currentVal>maxVal ) throw new InvalidDataException("Pixel value should not be higher than maxVal");
+            pixelValues[j%width][j/width]=currentVal;
+        }
 
-
-        return new PGM();
-
+        return new PGM(width,height,maxVal,pixelValues);
     }
 
 
