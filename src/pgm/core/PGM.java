@@ -1,4 +1,4 @@
-package pgm.baby;
+package pgm.core;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package pgm.baby;
+package pgm.core;
 
 /**
  * Created by Thomas on 12/1/2014.

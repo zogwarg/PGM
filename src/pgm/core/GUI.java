@@ -1,4 +1,4 @@
-package pgm.baby;
+package pgm.core;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

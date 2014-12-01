@@ -1,4 +1,4 @@
-package pgm.baby;
+package pgm.core;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
