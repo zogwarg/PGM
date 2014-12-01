@@ -32,19 +32,27 @@ public class Loader {
     public boolean IsValid() {
         //boolean validity = true;
 
-        Pattern comment = Pattern.compile("#.*$");
-        Pattern number = Pattern.compile("[0-9]+$");
+        Pattern p2 = Pattern.compile("^P2$");
+        Pattern comment = Pattern.compile("^#.*$");
+        Pattern dimensions = Pattern.compile("^[0-9]+ [0-9]+$}");
 
-        int size lines.size();
 
-        if (size<5) return false;
-        if(lines.get(0)!='P2') return false;
+        int size = lines.size();
+
+        if (size<4) return false;
+        if(!p2.matcher(lines.get(0)).matches()) return false;
         if(!comment.matcher(lines.get(1)).matches()) return false;
 
-        if(number.matcher(lines.get(2)).matches() && number.matcher(lines.get(3)).matches() && number.matcher(lines.get(4)).matches()) {
-            int width = (int) lines.get(2);
-            int height = (int) lines.get(3);
-            int maxVal = (int) lines.get(4);
+        System.out.println("Batch");
+
+
+        if(dimensions.matcher(lines.get(2)).matches() && ) {
+            int dime;
+            int width = Integer.parseInt(lines.get(2));
+            int height = Integer.parseInt(lines.get(3));
+            int maxVal = Integer.parseInt(lines.get(4));
+
+            System.out.println(size+" "+(height+3));
 
             if(size != height + 3 || maxVal <0 || maxVal > 255 ) return false;
 
@@ -52,7 +60,7 @@ public class Loader {
             String lineFormat = "";
 
             for (int i=0;i<width-1;i++ ) {
-                lineFormat+=numberToken+" "
+                lineFormat+=numberToken+" ";
             }
 
             lineFormat+=numberToken+"$";
