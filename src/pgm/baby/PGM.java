@@ -123,7 +123,7 @@ public class PGM {
     public int medianValue() {
         List<Integer> pixelList = getPixelList();
         Collections.sort(pixelList);
-        return pixelList.get(Math.floorDiv(pixelList.size(),2));
+        return pixelList.get(Math.floorDiv(pixelList.size(), 2));
     }
 
     /**
@@ -138,5 +138,21 @@ public class PGM {
             }
         }
         return pixelList;
+    }
+
+    public PGM resize(int newWidth, int newHeight) {
+        int[][] newPixelValues = new int[newHeight][newWidth];
+        for (int i = 0; i < newHeight; i++) {
+            for (int j = 0; j < newWidth; j++) {
+                int pixelValue = 0;
+                for (int k = 0; k < height; k++) {
+                    for (int l = 0; l < width; l++) {
+                        pixelValue += pixelValues[Math.floorDiv(height*i + k, newHeight)][Math.floorDiv(width * j + l, newWidth)];
+                    }
+                }
+                newPixelValues[i][j] = Math.floorDiv(pixelValue, height * width);
+            }
+        }
+        return new PGM(newWidth, newHeight, maxVal, newPixelValues);
     }
 }
