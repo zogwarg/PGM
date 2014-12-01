@@ -1,12 +1,13 @@
 package pgm.baby;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by loic on 01/12/14.
- */
 public class PGM {
     private int width;
     private int height;
