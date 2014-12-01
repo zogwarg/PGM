@@ -9,8 +9,12 @@ import java.awt.event.ActionListener;
  * Created by thomas on 01/12/14.
  */
 public class GUI extends JFrame {
+    private static final int SIZE_OF_PIXEL = 20;
+
     private int height;
     private int width;
+
+    private PGM actualPGM;
 
     // Menu
     private JMenuBar jMenuBar;
@@ -26,9 +30,30 @@ public class GUI extends JFrame {
     private JMenu jMenuAbout;
     private JMenuItem jAboutInfo;
 
+    /**
+     * Create new windows without any PGM file
+     * @param w
+     * @param h
+     */
     GUI(int w, int h) {
         this.height = h;
         this.width = w;
+        this.actualPGM = null;
+
+        this.initWindow();
+        this.initMenu();
+        pack();
+    }
+
+    /**
+     * Open window with PGM file and options
+     * @param openedPGM
+     */
+    GUI(PGM openedPGM) {
+        this.actualPGM = openedPGM;
+
+        this.height = SIZE_OF_PIXEL * actualPGM.getHeight();
+        this.width = SIZE_OF_PIXEL * actualPGM.getWidth();
 
         this.initWindow();
         this.initMenu();

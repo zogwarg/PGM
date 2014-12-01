@@ -28,6 +28,22 @@ public class PGM {
     }
 
     /**
+     * Height getter
+     * @return height
+     */
+    public int getHeight() {
+        return this.height;
+    }
+
+    /**
+     * Width getter
+     * @return width
+     */
+    public int getWidth() {
+        return this.width;
+    }
+
+    /**
      * Get an histogram values from the current PGM
      * @return number of occurences of each grayscale between 0 and maxVal
      */
@@ -154,5 +170,57 @@ public class PGM {
             }
         }
         return new PGM(newWidth, newHeight, maxVal, newPixelValues);
+    }
+
+    /**
+     * Allow to write PGM in a file
+     * @param filename filename and path of the saved file
+     */
+    public void save(String filename) {
+        BufferedWriter bufferedWriter = null;
+        try{
+            // BufferedWriter Creation
+            bufferedWriter = new BufferedWriter(new FileWriter(filename));
+
+            // we write in file
+            bufferedWriter.write(this.toString());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bufferedWriter != null) {
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Give information of actual PGM in text format
+     * @return String in PGM Format
+     */
+    @Override
+    public String toString() {
+        String out = "P2\n";
+        out += "# Generated with our super program\n";
+        out += Integer.toString(width) + " " + Integer.toString(height) + "\n";
+        out += Integer.toString(maxVal) + "\n";
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                out += Integer.toString(pixelValues[i][j]) + " ";
+                if (i+j%17 == 16) { // Only 17 values by lines, to be sure we cannot have more than 70 caracters by lines
+                    out += "\n";
+                }
+            }
+        }
+
+        return out;
     }
 }
