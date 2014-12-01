@@ -217,16 +217,11 @@ public class PGM {
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (pixelValues[i][j] > 99) {
-                    charWritten += 4;
-                } else if (pixelValues[i][j] > 9) {
-                    charWritten += 3;
-                } else {
-                    charWritten += 2;
-                }
 
+                // No more than 70 character per line
+                charWritten += Integer.toString(pixelValues[i][j]).length()+1;
                 if (charWritten > 70) {
-                    charWritten = 0;
+                    charWritten = Integer.toString(pixelValues[i][j]).length()+1;
                     out += "\n";
                 }
 
