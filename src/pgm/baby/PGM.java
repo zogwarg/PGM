@@ -97,4 +97,30 @@ public class PGM {
         }
         return new PGM(width, height, maxVal, newPixelValues);
     }
+
+    public int meanValue() {
+        int sum = 0;
+        for (int[] row : pixelValues) {
+            for (int pixel : row) {
+                sum += pixel;
+            }
+        }
+        return Math.floorDiv(sum, width * height);
+    }
+
+    public int medianValue() {
+        ArrayList<Integer> pixelList = new ArrayList<Integer>();
+        for (int[] row : pixelValues) {
+            for(int pixel : row) {
+                pixelList.add(new Integer(pixel));
+            }
+        }
+        pixelList.sort(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1 - o2;
+            }
+        });
+        return pixelList.get(Math.floorDiv(pixelList.size(),2)).intValue();
+    }
 }
