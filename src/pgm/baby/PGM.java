@@ -32,6 +32,22 @@ public class PGM {
     }
 
     /**
+     * Height getter
+     * @return height
+     */
+    public int getHeight() {
+        return this.height;
+    }
+
+    /**
+     * Width getter
+     * @return width
+     */
+    public int getWidth() {
+        return this.width;
+    }
+
+    /**
      * Get an histogram values from the current PGM
      * @return number of occurences of each grayscale between 0 and maxVal
      */
