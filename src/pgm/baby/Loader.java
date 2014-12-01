@@ -15,25 +15,18 @@ public class Loader {
 
     public Loader(String path) {
         this.path = path;
-        BufferedReader reader;
+        BufferedReader reader = new BufferedReader(new FileReader(path));;
 
         lines = new ArrayList();
+        Pattern comment = Pattern.compile("#.*$");
         preParsedLine = "";
 
-        Pattern comment = Pattern.compile("#.*$");
-
-        try {
-            reader = new BufferedReader(new FileReader(path));
-
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-                preParsedLine+=comment.matcher(line).replaceAll("")+" ";
-            }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            lines.add(line);
+            preParsedLine+=comment.matcher(line).replaceAll("")+" ";
         }
-
+        
         preParsedLine=Pattern.compile("\\s+").matcher(preParsedLine).replaceAll(" ");
         preParsedLine=Pattern.compile(" $").matcher(preParsedLine).replaceAll("");
 
