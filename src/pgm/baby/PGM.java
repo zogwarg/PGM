@@ -144,6 +144,10 @@ public class PGM {
         return pixelList;
     }
 
+    /**
+     * Allow to write PGM in a file
+     * @param filename filename and path of the saved file
+     */
     public void save(String filename) {
         BufferedWriter bufferedWriter = null;
         try{
@@ -151,7 +155,7 @@ public class PGM {
             bufferedWriter = new BufferedWriter(new FileWriter(filename));
 
             // On ecrit dans le fichier
-            // TODO ecrire le fichier PGM
+            bufferedWriter.write(this.toString());
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -167,5 +171,28 @@ public class PGM {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Give information of actual PGM in text format
+     * @return String in PGM Format
+     */
+    @Override
+    public String toString() {
+        String out = "P2\n";
+        out += "# Generated with our super program\n";
+        out += Integer.toString(width) + " " + Integer.toString(height) + "\n";
+        out += Integer.toString(maxVal) + "\n";
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                out += Integer.toString(pixelValues[i][j]) + " ";
+                if (i+j%70 == 69) {
+                    out += "\n";
+                }
+            }
+        }
+
+        return out;
     }
 }
