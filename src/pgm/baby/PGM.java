@@ -1,7 +1,7 @@
 package pgm.baby;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 
 /**
  * Created by loic on 01/12/14.
@@ -118,12 +118,7 @@ public class PGM {
                 pixelList.add(new Integer(pixel));
             }
         }
-        pixelList.sort(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o1 - o2;
-            }
-        });
+        Collections.sort(pixelList);
         return pixelList.get(Math.floorDiv(pixelList.size(),2)).intValue();
     }
 }
