@@ -2,6 +2,7 @@ package pgm.baby;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -13,11 +14,11 @@ public class Loader {
     private ArrayList<String> lines;
     private String preParsedLine;
 
-    public Loader(String path) {
+    public Loader(String path) throws IOException {
         this.path = path;
         BufferedReader reader = new BufferedReader(new FileReader(path));;
 
-        lines = new ArrayList();
+        ArrayList<String> lines = new ArrayList();
         Pattern comment = Pattern.compile("#.*$");
         preParsedLine = "";
 
@@ -26,7 +27,7 @@ public class Loader {
             lines.add(line);
             preParsedLine+=comment.matcher(line).replaceAll("")+" ";
         }
-        
+
         preParsedLine=Pattern.compile("\\s+").matcher(preParsedLine).replaceAll(" ");
         preParsedLine=Pattern.compile(" $").matcher(preParsedLine).replaceAll("");
 
