@@ -40,6 +40,7 @@ public class Loader {
         if (size<5) return false;
         if(lines.get(0)!='P2') return false;
         if(!comment.matcher(lines.get(1)).matches()) return false;
+
         if(number.matcher(lines.get(2)).matches() && number.matcher(lines.get(3)).matches() && number.matcher(lines.get(4)).matches()) {
             int width = (int) lines.get(2);
             int height = (int) lines.get(3);
@@ -54,8 +55,15 @@ public class Loader {
                 lineFormat+=numberToken+" "
             }
 
-            lineFormat+=numberToken+"$"
+            lineFormat+=numberToken+"$";
 
+            Pattern linePattern = Pattern.compile(lineFormat);
+
+            for (int i=5;i<size;i++) {
+                if (!linePattern.matcher(lines.get(i)).matches()) return false;
+            }
+
+            return true;
 
         } else {
             return false;
