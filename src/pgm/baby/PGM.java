@@ -151,10 +151,10 @@ public class PGM {
     public void save(String filename) {
         BufferedWriter bufferedWriter = null;
         try{
-            // Creation du BufferedWriter
+            // BufferedWriter Creation
             bufferedWriter = new BufferedWriter(new FileWriter(filename));
 
-            // On ecrit dans le fichier
+            // we write in file
             bufferedWriter.write(this.toString());
 
         } catch (FileNotFoundException e) {
