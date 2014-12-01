@@ -187,7 +187,7 @@ public class PGM {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 out += Integer.toString(pixelValues[i][j]) + " ";
-                if (i+j%70 == 69) {
+                if (i+j%17 == 16) { // Only 17 values by lines, to be sure we cannot have more than 70 caracters by lines
                     out += "\n";
                 }
             }
