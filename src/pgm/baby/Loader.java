@@ -11,11 +11,16 @@ import java.util.regex.Pattern;
 public class Loader {
     private String path;
     private ArrayList<String> lines;
+    private String preParsedLine;
 
     public Loader(String path) {
         this.path = path;
         BufferedReader reader;
+
         lines = new ArrayList();
+        preParsedLine = "";
+
+        Pattern comment = Pattern.compile("#.*$");
 
         try {
             reader = new BufferedReader(new FileReader(path));
@@ -23,59 +28,43 @@ public class Loader {
             String line = null;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
+                preParsedLine+=comment.matcher(line).replaceAll("")+" ";
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+
+        preParsedLine=Pattern.compile("\\s+").matcher(preParsedLine).replaceAll(" ");
+        preParsedLine=Pattern.compile(" $").matcher(preParsedLine).replaceAll("");
+
+        System.out.println(preParsedLine);
     }
 
-    public boolean IsValid() {
-        //boolean validity = true;
+    public boolean IsBasicValid() {
+        Pattern format = Pattern.compile("^P2 [0-9]+ [0-9]+ [0-9]+ *[ 0-9]*$");
+        return format.matcher(preParsedLine).matches();
+    }
 
-        Pattern p2 = Pattern.compile("^P2$");
-        Pattern comment = Pattern.compile("^#.*$");
-        Pattern dimensions = Pattern.compile("^[0-9]+ [0-9]+$}");
+    public PGM loadPGM() {
+        if (!this.IsBasicValid()) throw new Error("There are errors in the format of the P2 PGM");
+
+        String[] content = preParsedLine.split(" ");
+
+        int width = Integer.parseInt(content[1]);
+        int height = Integer.parseInt(content[2]);
+        int maxVal = Integer.parseInt(content[3]);
+
+        if(maxVal<0 || maxVal>255) throw new Error("Max Value should be between 0 and 255");
+
+        if(content.length != width * height + 4) throw new Error("Incorrect number of pixel values");
+
+        int[][] pixelValues;
+
+        //TODO Fill pixel Values
 
 
-        int size = lines.size();
+        return new PGM();
 
-        if (size<4) return false;
-        if(!p2.matcher(lines.get(0)).matches()) return false;
-        if(!comment.matcher(lines.get(1)).matches()) return false;
-
-        System.out.println("Batch");
-
-
-        if(dimensions.matcher(lines.get(2)).matches() && ) {
-            int dime;
-            int width = Integer.parseInt(lines.get(2));
-            int height = Integer.parseInt(lines.get(3));
-            int maxVal = Integer.parseInt(lines.get(4));
-
-            System.out.println(size+" "+(height+3));
-
-            if(size != height + 3 || maxVal <0 || maxVal > 255 ) return false;
-
-            String numberToken = "[0-9]{1,3}";
-            String lineFormat = "";
-
-            for (int i=0;i<width-1;i++ ) {
-                lineFormat+=numberToken+" ";
-            }
-
-            lineFormat+=numberToken+"$";
-
-            Pattern linePattern = Pattern.compile(lineFormat);
-
-            for (int i=5;i<size;i++) {
-                if (!linePattern.matcher(lines.get(i)).matches()) return false;
-            }
-
-            return true;
-
-        } else {
-            return false;
-        }
     }
 
 
