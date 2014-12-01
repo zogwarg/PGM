@@ -5,6 +5,7 @@ package pgm.baby;
  */
 public class Test {
     public static void main(String[] args) {
-        Loader loader = new Loader("Test.txt");
+        Loader loader = new Loader("feep.pgm");
+
     }
 }
