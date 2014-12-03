@@ -46,9 +46,16 @@ public class Loader {
      */
     public PGM loadPGM() throws InvalidDataException {
         if (!tokens.get(0).equals("P2")) throw new InvalidDataException("There are errors in the format of the P2 PGM");
-        int width = Integer.parseInt(tokens.get(1));
-        int height = Integer.parseInt(tokens.get(2));
-        int maxVal = Integer.parseInt(tokens.get(3));
+        int width = 0;
+        int height = 0;
+        int maxVal = 0;
+        try {
+            width = Integer.parseInt(tokens.get(1));
+            height = Integer.parseInt(tokens.get(2));
+            maxVal = Integer.parseInt(tokens.get(3));
+        } catch (NumberFormatException e) {
+            throw new InvalidDataException("Metadata section should only contain Integers");
+        }
 
         if(maxVal<0 || maxVal>255) throw new InvalidDataException("Max Value should be between 0 and 255");
 
