@@ -19,7 +19,7 @@ public class Loader {
 
     /**
      * Constructor
-     * Does a pre-parsing task by stripping comments and putting all data on one line
+     * Does a pre-parsing task by stripping comments and putting all data in a token list
      *
      * @param path the path to the pgm file to be read
      * @throws IOException if unable to read the file or some lines of the file
@@ -39,7 +39,7 @@ public class Loader {
 
 
     /**
-     * Creates a new PGM object, by parsing loaded data.
+     * Creates a new PGM object, by parsing the loaded data.
      *
      * @return PGMobject
      * @throws pgm.core.InvalidDataException , if the data is invalid
