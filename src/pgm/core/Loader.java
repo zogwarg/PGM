@@ -32,9 +32,14 @@ public class Loader {
         while ((line = reader.readLine()) != null) {
             // Remove comments
             line = line.split("#")[0];
-            tokens.addAll(Arrays.asList(line.split("\\s+")));
+            String[] splitLine = line.split("\\s+");
+            if (!splitLine[0].equals("")) {
+                tokens.add(splitLine[0]);
+            }
+            for (int i = 1; i < splitLine.length; i++) {
+                tokens.add(splitLine[i]);
+            }
         }
-        tokens.remove("");
     }
 
 
