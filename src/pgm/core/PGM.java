@@ -161,23 +161,43 @@ public class PGM {
         int[][] newPixelValues = new int[newHeight][newWidth];
         for (int i = 0; i < newHeight; i++) {
             for (int j = 0; j < newWidth; j++) {
-                newPixelValues[i][j] = getValue(newHeight, newWidth, i,j);
+                newPixelValues[i][j] = getValue(newHeight, newWidth, i, j);
             }
         }
         return new PGM(newHeight, newWidth, maxVal, newPixelValues);
     }
 
-    public int getValue(int newHeight, int newWidth, int row, int col) {
+    private int getValue(int newHeight, int newWidth, int row, int col) {
+        // Integer division, equivalent to floor
         int minRow = (row * height) / newHeight;
-        int maxRow = ((row + 1) * height) / newHeight;
-        int minCol = (col * width) / newWidth;
-        int maxCol = ((col + 1) * width) / newWidth;
-        for (int i = minRow; i <= maxRow; i++){
+        int minCol = (col * width ) / newWidth;
+        // Ceil of ((row + 1) * height) / newHeight
+        int maxRow = ((newHeight - 1) + ((row + 1) * height)) / newHeight;
+        // Ceil of ((col + 1) * width) / width
+        int maxCol = ((newWidth  - 1) + ((col + 1) * width )) / newWidth;
+        int value = 0;
+        int area = 0;
+        for (int i = minRow; i < maxRow; i++){
+            int sizeI = getRatio(i,row,height,newHeight);
             for (int j = minCol; j < maxCol; j++) {
-                //todo finish method
+                int size = sizeI * getRatio(j,col,width,newWidth);
+                value += pixelValues[i][j] * size;
+                area += size;
             }
         }
-        return 0;
+        return value/area;
+    }
+
+    // todo javadoc
+    // returns a size object of overlab between two pixels. value between 0 and newSize
+    private int getRatio(int oldVal, int newVal, int oldSize, int newSize) {
+        if (oldVal * newSize < newVal * oldSize) {
+            return (newSize - newVal * oldSize + oldVal * newSize);
+        } else if (oldVal * newSize > (newVal+1) * oldSize) {
+            return (newSize - oldVal * newSize + (newVal+1) * oldSize);
+        } else {
+            return newSize;
+        }
     }
 
     /**
