@@ -61,7 +61,15 @@ public class Loader {
 
         int i = 0,j = 0;
         for (String token: tokens.subList(4,size-1)) {
-            pixelValues[i][j] = Integer.parseInt(token);
+            try {
+                int value = Integer.parseInt(token);
+                if (value < 0 || value > maxVal) {
+                    throw new InvalidDataException("Pixel value must be between 0 and " + maxVal);
+                }
+                pixelValues[i][j] = value;
+            } catch (NumberFormatException e) {
+                throw new InvalidDataException("Pixel value must be an Integer");
+            }
             j++;
             if (j >= width) {
                 j=0;
