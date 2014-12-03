@@ -9,21 +9,21 @@ import java.util.Collections;
 import java.util.List;
 
 public class PGM {
-    private int width;
     private int height;
+    private int width;
     private int maxVal;
     private int[][] pixelValues;
 
     /**
      * Constructor for a PGM
-     * @param width number of colomns for the matrix
      * @param height number of rows for the matrix
+     * @param width number of colomns for the matrix
      * @param maxVal Threshold for white value, give the number of grayscale available
      * @param pixelValues Matrix to initialize a new PGM
      */
-    public PGM(int width, int height, int maxVal, int[][] pixelValues) {
-        this.width = width;
+    public PGM(int height, int width,  int maxVal, int[][] pixelValues) {
         this.height = height;
+        this.width = width;
         this.maxVal = maxVal;
         this.pixelValues = pixelValues;
     }
@@ -76,12 +76,12 @@ public class PGM {
         for (int j = 0; j < width; j++) {
             for (int i = 0; i < height; i++) {
                 if (i >= height-values[j]) {
-                    newPixelValues[i][j] = 1;
+                    newPixelValues[i][j] = maxVal;
                 }
             }
         }
 
-        return new PGM(width, height, 1, newPixelValues);
+        return new PGM(height, width, maxVal, newPixelValues);
     }
 
     /**
@@ -98,7 +98,7 @@ public class PGM {
                 }
             }
         }
-        return new PGM(width, height, maxVal, newPixelValues);
+        return new PGM(height, width, maxVal, newPixelValues);
     }
 
     /**
@@ -116,7 +116,7 @@ public class PGM {
                 newPixelValues[i][j] = Math.abs(pixelValues[i][j]-that.pixelValues[i][j]);
             }
         }
-        return new PGM(width, height, maxVal, newPixelValues);
+        return new PGM(height, width, maxVal, newPixelValues);
     }
 
     /**
@@ -157,20 +157,27 @@ public class PGM {
         return pixelList;
     }
 
-    public PGM boxResize(int newWidth, int newHeight) {
+    public PGM boxResize(int newHeight, int newWidth) {
         int[][] newPixelValues = new int[newHeight][newWidth];
         for (int i = 0; i < newHeight; i++) {
             for (int j = 0; j < newWidth; j++) {
-                int pixelValue = 0;
-                for (int k = 0; k < height; k++) {
-                    for (int l = 0; l < width; l++) {
-                        pixelValue += pixelValues[(height * i + k) / newHeight][(width * j + l) / newWidth];
-                    }
-                }
-                newPixelValues[i][j] = pixelValue / (height * width);
+                newPixelValues[i][j] = getValue(newHeight, newWidth, i,j);
             }
         }
-        return new PGM(newWidth, newHeight, maxVal, newPixelValues);
+        return new PGM(newHeight, newWidth, maxVal, newPixelValues);
+    }
+
+    public int getValue(int newHeight, int newWidth, int row, int col) {
+        int minRow = (row * height) / newHeight;
+        int maxRow = ((row + 1) * height) / newHeight;
+        int minCol = (col * width) / newWidth;
+        int maxCol = ((col + 1) * width) / newWidth;
+        for (int i = minRow; i <= maxRow; i++){
+            for (int j = minCol; j < maxCol; j++) {
+                //todo finish method
+            }
+        }
+        return 0;
     }
 
     /**
@@ -179,14 +186,14 @@ public class PGM {
      * @param newHeight height of the new image
      * @return the new image
      */
-    public PGM nearestNeighborResize(int newWidth, int newHeight) {
+    public PGM nearestNeighborResize(int newHeight, int newWidth) {
         int[][] newPixelValues = new int[newHeight][newWidth];
         for (int i = 0; i < newHeight; i++) {
             for (int j = 0; j < newWidth; j++) {
                 newPixelValues[i][j] = pixelValues[(i * height) / newHeight][(j * width) / newWidth];
             }
         }
-        return new PGM(newWidth, newHeight, maxVal, newPixelValues);
+        return new PGM(newHeight, newWidth, maxVal, newPixelValues);
     }
 
     /**

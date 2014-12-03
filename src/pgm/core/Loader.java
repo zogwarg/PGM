@@ -76,6 +76,6 @@ public class Loader {
                 i++;
             }
         }
-        return new PGM(width,height,maxVal,pixelValues);
+        return new PGM(height, width, maxVal, pixelValues);
     }
 }
