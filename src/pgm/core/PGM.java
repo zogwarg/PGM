@@ -101,6 +101,38 @@ public class PGM {
         return new PGM(height, width, maxVal, newPixelValues);
     }
 
+    public PGM posterize(int colorNum) {
+        int countPixel = 0;
+        int numPixel = width * height;
+
+        //List<Integer> slicePoints = new ArrayList<Integer>();
+
+        int[] histogramm = histogramValues();
+        int length = histogramm.length;
+
+        int[] valueMap = new int[length];
+        int curVal = 0;
+
+        for (int i = 0; i < length; i++) {
+            countPixel += histogramm[i]; // Adding the Population for I_th color value in Histogram
+            valueMap[i] = curVal;
+            if (countPixel>=numPixel/colorNum) {
+                countPixel -= numPixel/colorNum; // Resetting the count when a population slice is reached
+                curVal++;
+            }
+        }
+
+        int[][] newPixelValues = new int[height][width];
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                newPixelValues[i][j] = valueMap[pixelValues[i][j]];
+            }
+        }
+
+        return new PGM(height,width,colorNum,newPixelValues);
+    }
+
     /**
      * Allow minus comparison between two PGM files with the same size and maxVal
      * @param that other PGM file to compare with the first one
