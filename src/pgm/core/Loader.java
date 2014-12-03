@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -12,9 +15,7 @@ import java.util.regex.Pattern;
  * Used to open a file, parse the data and fill a PGM object with said data
  */
 public class Loader {
-    private String path;
-    private ArrayList<String> lines;
-    private String preParsedLine;
+    private List<String> tokens;
 
     /**
      * Constructor
@@ -24,66 +25,49 @@ public class Loader {
      * @throws IOException if unable to read the file or some lines of the file
      */
     public Loader(String path) throws IOException {
-        this.path = path;
-        BufferedReader reader = new BufferedReader(new FileReader(path));;
-
-        ArrayList<String> lines = new ArrayList<String>();
-        Pattern comment = Pattern.compile("#.*$");
-        preParsedLine = "";
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        tokens = new ArrayList<String>();
 
         String line = null;
         while ((line = reader.readLine()) != null) {
-            lines.add(line);
-            preParsedLine+=comment.matcher(line).replaceAll("")+" ";
+            // Remove comments
+            line = line.split("#")[0];
+            tokens.addAll(Arrays.asList(line.split("\\s+")));
         }
-
-        preParsedLine=Pattern.compile("\\s+").matcher(preParsedLine).replaceAll(" ");
-        preParsedLine=Pattern.compile(" $").matcher(preParsedLine).replaceAll("");
-
-        //System.out.println(preParsedLine);
+        tokens.remove("");
     }
 
-    /**
-     * Checks basic format validity, pre-parsed file should start with P2 and only contain spaces or numbers
-     * and have at least the width height and maxVal fields
-     *
-     * @return bool , true if format is valid
-     */
-    public boolean IsBasicValid() {
-        Pattern format = Pattern.compile("^P2 [0-9]+ [0-9]+ [0-9]+ *[ 0-9]*$");
-        return format.matcher(preParsedLine).matches();
-    }
 
     /**
      * Creates a new PGM object, by parsing loaded data.
      *
      * @return PGMobject
-     * @throws InvalidDataException , if the data is invalid
+     * @throws pgm.core.InvalidDataException , if the data is invalid
      */
     public PGM loadPGM() throws InvalidDataException {
-        if (!this.IsBasicValid()) throw new InvalidDataException("There are errors in the format of the P2 PGM");
-
-        String[] content = preParsedLine.split(" ");
-
-        int width = Integer.parseInt(content[1]);
-        int height = Integer.parseInt(content[2]);
-        int maxVal = Integer.parseInt(content[3]);
+        if (!tokens.get(0).equals("P2")) throw new InvalidDataException("There are errors in the format of the P2 PGM");
+        int width = Integer.parseInt(tokens.get(1));
+        int height = Integer.parseInt(tokens.get(2));
+        int maxVal = Integer.parseInt(tokens.get(3));
 
         if(maxVal<0 || maxVal>255) throw new InvalidDataException("Max Value should be between 0 and 255");
 
-        if(content.length != width * height + 4) throw new InvalidDataException("Incorrect number of pixel values");
+        if(height<0 || width <0) throw new InvalidDataException("Height and width should be positive");
+
+        int size = tokens.size();
+        if(size - 4 != width * height) throw new InvalidDataException("Incorrect number of pixel values");
 
         int[][] pixelValues= new int[height][width];
 
-        for(int i=4; i<content.length ; i++) {
-            int j = i-4;
-            int currentVal = Integer.parseInt(content[i]);
-            if (currentVal<0 || currentVal>maxVal ) throw new InvalidDataException("Pixel value should not be higher than maxVal");
-            pixelValues[j/width][j%width]=currentVal;
+        int i = 0,j = 0;
+        for (String token: tokens.subList(4,size-1)) {
+            pixelValues[i][j] = Integer.parseInt(token);
+            j++;
+            if (j >= width) {
+                j=0;
+                i++;
+            }
         }
-
         return new PGM(width,height,maxVal,pixelValues);
     }
-
-
 }
