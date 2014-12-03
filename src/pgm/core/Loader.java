@@ -54,7 +54,7 @@ public class Loader {
             height = Integer.parseInt(tokens.get(2));
             maxVal = Integer.parseInt(tokens.get(3));
         } catch (NumberFormatException e) {
-            throw new InvalidDataException("Metadata section should only contain Integers");
+            throw new InvalidDataException("Width, Height and Maximum Value fields should only contain Integers");
         }
 
         if(maxVal<0 || maxVal>255) throw new InvalidDataException("Max Value should be between 0 and 255");
