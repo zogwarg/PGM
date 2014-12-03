@@ -157,17 +157,33 @@ public class PGM {
         return pixelList;
     }
 
-    public PGM resize(int newWidth, int newHeight) {
+    public PGM boxResize(int newWidth, int newHeight) {
         int[][] newPixelValues = new int[newHeight][newWidth];
         for (int i = 0; i < newHeight; i++) {
             for (int j = 0; j < newWidth; j++) {
                 int pixelValue = 0;
                 for (int k = 0; k < height; k++) {
                     for (int l = 0; l < width; l++) {
-                        pixelValue += pixelValues[Math.floorDiv(height*i + k, newHeight)][Math.floorDiv(width * j + l, newWidth)];
+                        pixelValue += pixelValues[(height * i + k) / newHeight][(width * j + l) / newWidth];
                     }
                 }
-                newPixelValues[i][j] = Math.floorDiv(pixelValue, height * width);
+                newPixelValues[i][j] = pixelValue / (height * width);
+            }
+        }
+        return new PGM(newWidth, newHeight, maxVal, newPixelValues);
+    }
+
+    /**
+     * Simplest and fastest resize, but image quality suffers
+     * @param newWidth width of the new image
+     * @param newHeight height of the new image
+     * @return the new image
+     */
+    public PGM nearestNeighborResize(int newWidth, int newHeight) {
+        int[][] newPixelValues = new int[newHeight][newWidth];
+        for (int i = 0; i < newHeight; i++) {
+            for (int j = 0; j < newWidth; j++) {
+                newPixelValues[i][j] = pixelValues[(i * height) / newHeight][(j * width) / newWidth];
             }
         }
         return new PGM(newWidth, newHeight, maxVal, newPixelValues);
@@ -184,7 +200,21 @@ public class PGM {
             bufferedWriter = new BufferedWriter(new FileWriter(filename));
 
             // we write in file
-            bufferedWriter.write(this.toString());
+            bufferedWriter.write("P2\n# Generated with super short generator\n"+width + " " + height + "\n" + maxVal + "\n");
+            int lineLength = 0;
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    String value = Integer.toString(pixelValues[i][j]);
+                    if (lineLength + value.length() + 1 > 70) {
+                        bufferedWriter.write("\n");
+                        lineLength = value.length() + 1;
+                    } else {
+                        lineLength += value.length() +1;
+                    }
+                    bufferedWriter.write(value + " ");
+                }
+            }
+            bufferedWriter.write("\n");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -200,35 +230,5 @@ public class PGM {
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * Give information of actual PGM in text format
-     * @return String in PGM Format
-     */
-    @Override
-    public String toString() {
-        int charWritten = 0;
-
-        String out = "P2\n";
-        out += "# Generated with our super program\n";
-        out += Integer.toString(width) + " " + Integer.toString(height) + "\n";
-        out += Integer.toString(maxVal) + "\n";
-
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-
-                // No more than 70 character per line
-                charWritten += Integer.toString(pixelValues[i][j]).length()+1;
-                if (charWritten > 70) {
-                    charWritten = Integer.toString(pixelValues[i][j]).length()+1;
-                    out += "\n";
-                }
-
-                out += Integer.toString(pixelValues[i][j]) + " ";
-            }
-        }
-
-        return out;
     }
 }

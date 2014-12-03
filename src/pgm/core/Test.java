@@ -8,8 +8,8 @@ public class Test {
 
         PGM pgm = null;
         try {
-            System.out.println("Opening file obama.pgm");
-            Loader loader = new Loader("obama.pgm");
+            System.out.println("Opening file lena.ascii.pgm Test");
+            Loader loader = new Loader("lena.ascii.pgm");
             System.out.println("Loading file into PGM object");
             pgm = loader.loadPGM();
         } catch (Exception e) {
@@ -17,14 +17,14 @@ public class Test {
         }
 
         if (pgm != null) {
-            System.out.println("Saving Histogram as PGM");
-            pgm.histogram().save("histogram.pgm");
+            System.out.println("Resizing with nearest neighbor and saving as lena.1000.pgm");
+            pgm.nearestNeighborResize(1000,1000).save("lena.1000.pgm");
         }
 
         System.out.println("Done.");
 
-        GUI gui = new GUI(640, 320);
-        gui.setVisible(true);
+        //GUI gui = new GUI(640, 320);
+        //gui.setVisible(true);
 
     }
 }
