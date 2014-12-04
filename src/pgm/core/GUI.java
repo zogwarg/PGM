@@ -35,25 +35,10 @@ public class GUI extends JFrame {
      * @param w
      * @param h
      */
-    GUI(int w, int h) {
-        this.height = h;
-        this.width = w;
+    GUI() {
+        this.height = 320;
+        this.width = 20;
         this.actualPGM = null;
-
-        this.initWindow();
-        this.initMenu();
-        pack();
-    }
-
-    /**
-     * Open window with PGM file and options
-     * @param openedPGM
-     */
-    GUI(PGM openedPGM) {
-        this.actualPGM = openedPGM;
-
-        this.height = SIZE_OF_PIXEL * actualPGM.getHeight();
-        this.width = SIZE_OF_PIXEL * actualPGM.getWidth();
 
         this.initWindow();
         this.initMenu();
