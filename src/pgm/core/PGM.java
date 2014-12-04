@@ -44,6 +44,10 @@ public class PGM {
         return this.width;
     }
 
+    public int getPixelValue(int x, int y) {
+        return pixelValues[x][y];
+    }
+
     /**
      * Get an histogram values from the current PGM
      * @return number of occurences of each grayscale between 0 and maxVal
