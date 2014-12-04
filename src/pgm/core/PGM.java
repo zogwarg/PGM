@@ -124,16 +124,25 @@ public class PGM {
         int[] histogram = histogramValues();
         int length = histogram.length;
 
-        int[] valueMap = new int[length];
-        int curVal = 0;
+        int[] sliceMap = new int[length];
+        int curSlice = 0;
+
+        int[] sliceToVal = new int[colorNum];
+        boolean colorToBeFound = true;
 
         for (int i = 0; i < length; i++) {
             countPixel += histogram[i]; // Adding the Population for I_th color value in Histogram
-            valueMap[i] = (maxVal*curVal)/colorNum;
+            sliceMap[i] = (curSlice < colorNum ? curSlice : colorNum - 1); // Ugly (?:) , needed when colorNum slightly under the number of colors;
+
+            if (countPixel>=numPixel/(2*colorNum) && colorToBeFound && curSlice < colorNum) {
+                sliceToVal[curSlice] = i;
+                colorToBeFound = false;
+            }
 
             if (countPixel>=numPixel/colorNum) {
                 countPixel -= numPixel/colorNum; // Resetting the count when a population slice is reached
-                curVal++;
+                curSlice++;
+                colorToBeFound = true;
             }
         }
 
@@ -141,7 +150,7 @@ public class PGM {
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                newPixelValues[i][j] = valueMap[pixelValues[i][j]];
+                newPixelValues[i][j] = sliceToVal[sliceMap[pixelValues[i][j]]];
             }
         }
 
