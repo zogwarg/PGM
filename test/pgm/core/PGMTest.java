@@ -152,12 +152,12 @@ public class PGMTest extends TestCase {
 
     @Test
     public void testMeanValue() throws Exception {
-
+        assertEquals(50,pgm.meanValue());
     }
 
     @Test
     public void testMedianValue() throws Exception {
-
+        assertEquals(55,pgm.medianValue());
     }
 
     @Test
