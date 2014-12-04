@@ -26,11 +26,19 @@ public class ImageGUI extends JFrame {
     private JMenuItem jFileSave;
     private JMenuItem jFileClose;
     private JMenuItem jFileExit;
+
+    private JMenu jMenuTreatment;
+    private JMenuItem jTreatmentHistogram;
+    private JMenuItem jTreatmentResizeNearest;
+    private JMenuItem jTreatmentResizeBox;
+    private JMenuItem jTreatmentResizeBilinear;
+
     private JMenu jMenuFilter;
-    private JMenuItem jFilterHistogram;
     private JMenuItem jFilterThreshold;
     private JMenuItem jFilterThresholdMean;
     private JMenuItem jFilterThresholdMedian;
+    private JMenuItem jFilterPosterize;
+
     private JMenu jMenuAbout;
     private JMenuItem jAboutInfo;
 
@@ -123,15 +131,53 @@ public class ImageGUI extends JFrame {
             }
         });
 
-        // Menu File
-        jMenuFilter = new JMenu("Apply filter");
+        // Menus treatment and filter
+        jMenuTreatment = new JMenu("Treatments");
+        jMenuFilter = new JMenu("Filters");
 
         // Histogram
-        jFilterHistogram = new JMenuItem("Histogram");
-        jFilterHistogram.addActionListener(new ActionListener() {
+        jTreatmentHistogram = new JMenuItem("Histogram");
+        jTreatmentHistogram.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO apply and open histogram
+                PGM histogram = image.histogram();
+                ImageGUI histoGUI = new ImageGUI(histogram, "histogram");
+                histoGUI.setResizable(false);
+                histoGUI.setVisible(true);
+            }
+        });
+
+        // Resize
+        jTreatmentResizeNearest = new JMenuItem("Resize (nearest)");
+        jTreatmentResizeNearest.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO ask for value and apply and open Treshsold
+            }
+        });
+
+        jTreatmentResizeBox = new JMenuItem("Resize (box)");
+        jTreatmentResizeBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO ask for value and apply and open Treshsold
+            }
+        });
+
+        jTreatmentResizeBilinear = new JMenuItem("Resize (bilinear)");
+        jTreatmentResizeBilinear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO ask for value and apply and open Treshsold
+            }
+        });
+
+        // Posterize
+        jFilterPosterize = new JMenuItem("Posterize");
+        jFilterPosterize.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO ask for value and apply and open Posterize
             }
         });
 
@@ -149,7 +195,11 @@ public class ImageGUI extends JFrame {
         jFilterThresholdMean.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO apply and open Mean Treshsold
+                int value = image.meanValue();
+                PGM out = image.threshold(value);
+                ImageGUI outGUI = new ImageGUI(out, "Mean Threshold");
+                outGUI.setResizable(false);
+                outGUI.setVisible(true);
             }
         });
 
@@ -158,7 +208,11 @@ public class ImageGUI extends JFrame {
         jFilterThresholdMedian.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO apply and open Median Treshsold
+                int value = image.medianValue();
+                PGM out = image.threshold(value);
+                ImageGUI outGUI = new ImageGUI(out, "Median Threshold");
+                outGUI.setResizable(false);
+                outGUI.setVisible(true);
             }
         });
 
@@ -178,8 +232,14 @@ public class ImageGUI extends JFrame {
         jMenuFile.add(jFileClose);
         jMenuFile.add(jFileExit);
 
+        // Adding items to treatment menu
+        jMenuTreatment.add(jTreatmentHistogram);
+        jMenuTreatment.add(jTreatmentResizeNearest);
+        jMenuTreatment.add(jTreatmentResizeBox);
+        jMenuTreatment.add(jTreatmentResizeBilinear);
+
         // Adding items to filters menu
-        jMenuFilter.add(jFilterHistogram);
+        jMenuFilter.add(jFilterPosterize);
         jMenuFilter.add(jFilterThreshold);
         jMenuFilter.add(jFilterThresholdMean);
         jMenuFilter.add(jFilterThresholdMedian);
@@ -189,6 +249,7 @@ public class ImageGUI extends JFrame {
 
         // Adding Menus to Bar
         jMenuBar.add(jMenuFile);
+        jMenuBar.add(jMenuTreatment);
         jMenuBar.add(jMenuFilter);
         jMenuBar.add(jMenuAbout);
 

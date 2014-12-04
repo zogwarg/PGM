@@ -86,7 +86,8 @@ public class PGM {
             }
         }
 
-        return new PGM(height, width, maxVal, newPixelValues);
+        PGM histo = new PGM(height, width, maxVal, newPixelValues);
+        return histo.nearestNeighborResize(width*9/16, width);
     }
 
     /**
