@@ -113,8 +113,10 @@ public class PGM {
 
     /**
      * Reduces the number of different colors in an image by looking at the histogram
-     * @param colorNum the number of target colors
-     * @return
+     * Making slices of approximately equal sized populations, and then taking the lower median value
+     * of each group as a color value
+     * @param colorNum the number of target colors, should be between 1 and maxVal
+     * @return PGM posterized image
      */
     public PGM posterize(int colorNum) throws InvalidParameterException {
         if ( colorNum<1 || colorNum>maxVal ) throw new InvalidParameterException("The parameter should be between 1 and " + maxVal);
