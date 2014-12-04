@@ -119,7 +119,7 @@ public class PGM {
      * @return PGM posterized image
      */
     public PGM posterize(int colorNum) throws InvalidParameterException {
-        if ( colorNum<1 || colorNum>maxVal ) throw new InvalidParameterException("The parameter should be between 1 and " + maxVal);
+        if ( colorNum<1 || colorNum>maxVal ) throw new IllegalArgumentException("The number of Target colors should be between 1 and " + maxVal);
         int countPixel = 0;
         int numPixel = width * height;
 
