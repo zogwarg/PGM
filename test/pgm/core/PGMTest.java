@@ -177,6 +177,8 @@ public class PGMTest extends TestCase {
 
     @Test
     public void testSave() throws Exception {
-
+        pgm.save("pgm_out/pgm-test-save.pgm");
+        PGM savedPGM = new Loader("pgm_out/pgm-test-save.pgm").loadPGM();
+        assertEquals(pgm,savedPGM);
     }
 }
