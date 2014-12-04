@@ -12,8 +12,6 @@ import java.awt.event.ActionListener;
  * Created by thomas on 01/12/14.
  */
 public class GUI extends JFrame {
-    private static final int SIZE_OF_PIXEL = 20;
-
     private int height;
     private int width;
 

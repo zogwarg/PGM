@@ -86,11 +86,14 @@ public class PGM {
             }
         }
 
-        return new PGM(height, width, maxVal, newPixelValues);
+        PGM histo = new PGM(height, width, maxVal, newPixelValues);
+        return histo.nearestNeighborResize(width*3/4, width); // Resizing to 4/3 ratio
     }
 
     /**
      * Apply a threshold filter on a opened PGM file
+     * If the pixel is geq than thres, paint it white
+     * Else paint it black
      * @param thresh affect the threshold for comparison
      * @return black and white PGM file thresholded
      */
@@ -150,6 +153,21 @@ public class PGM {
         }
 
         return new PGM(height,width,maxVal,newPixelValues);
+    }
+
+    /**
+     * Inverse color of the image
+     * @return PGM inversed image
+     */
+    public PGM inverse() {
+        int[][] newPixelValues = new int[height][width];
+        for (int i = 0; i < height; i++) {
+            for(int j=0; j< width; j++) {
+                newPixelValues[i][j] = maxVal - pixelValues[i][j];
+            }
+        }
+
+        return new PGM(height, width, maxVal, newPixelValues);
     }
 
     /**

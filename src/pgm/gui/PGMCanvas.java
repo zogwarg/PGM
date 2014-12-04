@@ -22,12 +22,12 @@ public class PGMCanvas extends Canvas {
     public void paint(Graphics g) {
         super.paint(g);
 
-        for(int x = 0; x < WIDTH; x++) {
-            for(int y = 0; y < HEIGHT; y++) {
+        for(int x = 0; x < height; x++) {
+            for(int y = 0; y < width; y++) {
                 int grayValue = image.getPixelValue(x, y);
                 Color color = new Color(grayValue, grayValue, grayValue);
                 g.setColor(color);
-                g.drawLine(x, y, x, y);
+                g.drawLine(y, x, y, x);
             }
         }
     }
