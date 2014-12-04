@@ -1,5 +1,6 @@
 package pgm.gui;
 
+import pgm.core.Main;
 import pgm.core.PGM;
 
 import javax.swing.*;
@@ -67,7 +68,7 @@ public class GUI extends JFrame {
                     if (openFile.showOpenDialog(GUI.this) == JFileChooser.APPROVE_OPTION) {
                         String file = openFile.getSelectedFile().getCanonicalPath();
                         System.out.println(file);
-                        // TODO handle opened file
+                        Main.openPGM(file);
                     }
 
                 } catch (Exception e) {
