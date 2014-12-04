@@ -72,7 +72,7 @@ public class Loader {
         int[][] pixelValues= new int[height][width];
 
         int i = 0,j = 0;
-        for (String token: tokens.subList(4,size-1)) {
+        for (String token: tokens.subList(4,size)) {
             try {
                 int value = Integer.parseInt(token);
                 if (value < 0 || value > maxVal) {
