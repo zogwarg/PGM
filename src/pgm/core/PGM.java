@@ -105,20 +105,25 @@ public class PGM {
         return new PGM(height, width, maxVal, newPixelValues);
     }
 
+    /**
+     * Reduces the number of different colors in an image by looking at the histogram
+     * @param colorNum the number of target colors
+     * @return
+     */
     public PGM posterize(int colorNum) {
         int countPixel = 0;
         int numPixel = width * height;
 
         //List<Integer> slicePoints = new ArrayList<Integer>();
 
-        int[] histogramm = histogramValues();
-        int length = histogramm.length;
+        int[] histogram = histogramValues();
+        int length = histogram.length;
 
         int[] valueMap = new int[length];
         int curVal = 0;
 
         for (int i = 0; i < length; i++) {
-            countPixel += histogramm[i]; // Adding the Population for I_th color value in Histogram
+            countPixel += histogram[i]; // Adding the Population for I_th color value in Histogram
             valueMap[i] = curVal;
             if (countPixel>=numPixel/colorNum) {
                 countPixel -= numPixel/colorNum; // Resetting the count when a population slice is reached
