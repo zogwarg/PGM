@@ -7,41 +7,54 @@ import org.junit.Test;
 import org.junit.Before;
 public class PGMTest extends TestCase {
 
-    private PGM checkerboard;
+    private PGM pgm;
 
     @Before
     public void setUp() throws Exception {
-        checkerboard = new PGM(2, 4, 255, new int[][] {{255, 0, 255, 0},{0, 255, 0, 255}});
+        pgm = new PGM(10, 5, 255, new int[][] {
+                { 5,  5,  5,  5,  5},
+                {15, 15, 15, 15, 15},
+                {25, 25, 25, 25, 25},
+                {35, 35, 35, 35, 35},
+                {45, 45, 45, 45, 45},
+                {55, 55, 55, 55, 55},
+                {65, 65, 65, 65, 65},
+                {75, 75, 75, 75, 75},
+                {85, 85, 85, 85, 85},
+                {95, 95, 95, 95, 95}
+        });
     }
 
 
     @Test
     public void testGetHeight() throws Exception {
-        assertEquals(2, checkerboard.getHeight());
+        assertEquals(10, pgm.getHeight());
     }
 
     @Test
     public void testGetWidth() throws Exception {
-        assertEquals(4, checkerboard.getWidth());
+        assertEquals(5, pgm.getWidth());
     }
 
     @Test
     public void testHistogramValues() throws Exception {
-        int [] checkerHistogramValues = new int[256];
-        checkerHistogramValues[0] = 4;
-        checkerHistogramValues[255] = 4;
-        assertArrayEquals(checkerHistogramValues, checkerboard.histogramValues());
+        int [] pgmHistogramValues = new int[256];
+        for (int i = 0; i < 10; i++) {
+            pgmHistogramValues[10*i + 5] = 5;
+        }
+        assertArrayEquals(pgmHistogramValues, pgm.histogramValues());
     }
 
     @Test
     public void testHistogram() throws Exception {
-        int [][] checkerboardHistogramPixels = new int[4][256];
-        for (int i = 0; i < 4; i++) {
-            checkerboardHistogramPixels[i][0] = 255;
-            checkerboardHistogramPixels[i][255] = 255;
+        int [][] pgmHistogramPixels = new int[5][256];
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 10; j++) {
+                pgmHistogramPixels[i][10*j + 5]=255;
+            }
         }
-        PGM checkerboardHistogram = new PGM(4, 256, 255, checkerboardHistogramPixels);
-        assertEquals(checkerboardHistogram, checkerboard.histogram());
+        PGM pgmHistogram = new PGM(5, 256, 255, pgmHistogramPixels);
+        assertEquals(pgmHistogram, pgm.histogram());
     }
 
     @Test
