@@ -62,6 +62,7 @@ public class GUI extends JFrame {
                     if (openFile.showOpenDialog(GUI.this) == JFileChooser.APPROVE_OPTION) {
                         String file = openFile.getSelectedFile().getCanonicalPath();
                         System.out.println(file);
+                        dispose(); // We close the actual window
                         Main.openPGM(file);
                     }
 

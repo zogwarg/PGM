@@ -5,6 +5,7 @@ import pgm.core.PGM;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,6 +24,7 @@ public class ImageGUI extends JFrame {
     private JMenu jMenuFile;
     private JMenuItem jFileOpen;
     private JMenuItem jFileSave;
+    private JMenuItem jFileClose;
     private JMenuItem jFileExit;
     private JMenu jMenuFilter;
     private JMenuItem jFilterHistogram;
@@ -62,7 +64,7 @@ public class ImageGUI extends JFrame {
         jMenuFile = new JMenu("File");
 
         // Open
-        jFileOpen = new JMenuItem("Open");
+        jFileOpen = new JMenuItem("Open file");
         jFileOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -72,7 +74,7 @@ public class ImageGUI extends JFrame {
                     openFile.setAcceptAllFileFilterUsed(false);
                     if (openFile.showOpenDialog(ImageGUI.this) == JFileChooser.APPROVE_OPTION) {
                         String file = openFile.getSelectedFile().getCanonicalPath();
-                        System.out.println(file);
+                        System.out.println("Opening "+file);
                         Main.openPGM(file);
                     }
 
@@ -83,7 +85,7 @@ public class ImageGUI extends JFrame {
         });
 
         // Save
-        jFileSave = new JMenuItem("Save");
+        jFileSave = new JMenuItem("Save file");
         jFileSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -92,7 +94,9 @@ public class ImageGUI extends JFrame {
                     saveFile.addChoosableFileFilter(new FileNameExtensionFilter(".pgm", "pgm"));
                     saveFile.setAcceptAllFileFilterUsed(false);
                     if (saveFile.showSaveDialog(ImageGUI.this) == JFileChooser.APPROVE_OPTION) {
-                        // TODO Handle saving file
+                        String file = saveFile.getSelectedFile().getCanonicalPath();
+                        System.out.println("Saving "+file);
+                        image.save(file);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -100,8 +104,17 @@ public class ImageGUI extends JFrame {
             }
         });
 
+        // Save
+        jFileClose = new JMenuItem("Close file");
+        jFileClose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                dispose();
+            }
+        });
+
         // Exit
-        jFileExit = new JMenuItem("Exit");
+        jFileExit = new JMenuItem("Exit program");
         jFileExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -162,6 +175,7 @@ public class ImageGUI extends JFrame {
         // Adding items to file menu
         jMenuFile.add(jFileOpen);
         jMenuFile.add(jFileSave);
+        jMenuFile.add(jFileClose);
         jMenuFile.add(jFileExit);
 
         // Adding items to filters menu
