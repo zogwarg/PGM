@@ -142,7 +142,7 @@ public class PGM {
             }
         }
 
-        return new PGM(height,width,colorNum,newPixelValues);
+        return new PGM(height,width,maxVal,newPixelValues);
     }
 
     /**
