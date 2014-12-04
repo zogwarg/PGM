@@ -1,4 +1,6 @@
-package pgm.core;
+package pgm.gui;
+
+import pgm.core.PGM;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -13,8 +15,6 @@ public class GUI extends JFrame {
 
     private int height;
     private int width;
-
-    private PGM actualPGM;
 
     // Menu
     private JMenuBar jMenuBar;
@@ -32,13 +32,10 @@ public class GUI extends JFrame {
 
     /**
      * Create new windows without any PGM file
-     * @param w
-     * @param h
      */
-    GUI() {
-        this.height = 20;
+    public GUI() {
+        this.height = 43;
         this.width = 320;
-        this.actualPGM = null;
 
         this.initWindow();
         this.initMenu();
@@ -54,8 +51,6 @@ public class GUI extends JFrame {
     private void initMenu() {
         // JMenuBar
         jMenuBar = new javax.swing.JMenuBar();
-        jMenuBar.setMinimumSize(new java.awt.Dimension(width, height));
-        jMenuBar.setSize(new java.awt.Dimension(width, height));
 
         // Menu File
         jMenuFile = new JMenu("File");
