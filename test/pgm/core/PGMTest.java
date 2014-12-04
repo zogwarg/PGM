@@ -3,6 +3,8 @@ package pgm.core;
 import junit.framework.TestCase;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.junit.Before;
 public class PGMTest extends TestCase {
@@ -59,7 +61,30 @@ public class PGMTest extends TestCase {
 
     @Test
     public void testThreshold() throws Exception {
-
+        assertEquals(new PGM(10, 5, 255, new int[][] {
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255}
+        }),pgm.threshold(5));
+        assertEquals(new PGM(10, 5, 255, new int[][] {
+            {  0,   0,   0,   0,   0},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255},
+            {255, 255, 255, 255, 255}
+        }),pgm.threshold(6));
     }
 
     @Test
@@ -69,7 +94,18 @@ public class PGMTest extends TestCase {
 
     @Test
     public void testMinus() throws Exception {
-
+        assertEquals(new PGM(10, 5, 255, new int[][] {
+                {  5,   5,   5,   5,   5},
+                { 15,  15,  15,  15,  15},
+                { 25,  25,  25,  25,  25},
+                { 35,  35,  35,  35,  35},
+                { 45,  45,  45,  45,  45},
+                { 55,  55,  55,  55,  55},
+                { 65,  65,  65,  65,  65},
+                {180, 180, 180, 180, 180},
+                {170, 170, 170, 170, 170},
+                {160, 160, 160, 160, 160}
+        }),pgm.minus(pgm.threshold(70)));
     }
 
     @Test
