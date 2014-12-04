@@ -48,7 +48,7 @@ public class ImageGUI extends JFrame {
      * @param image
      */
     public ImageGUI(PGM image, String filename) {
-        this.height = image.getHeight();
+        this.height = image.getHeight()+43;
         this.width = image.getWidth();
         this.image = image;
         this.filename = filename;
@@ -62,7 +62,7 @@ public class ImageGUI extends JFrame {
     private void initWindow() {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(filename);
-        setPreferredSize(new java.awt.Dimension(width, height+20));
+        setPreferredSize(new java.awt.Dimension(width, height));
     }
 
     private void initMenu() {
@@ -83,7 +83,6 @@ public class ImageGUI extends JFrame {
                     openFile.setAcceptAllFileFilterUsed(false);
                     if (openFile.showOpenDialog(ImageGUI.this) == JFileChooser.APPROVE_OPTION) {
                         String file = openFile.getSelectedFile().getCanonicalPath();
-                        System.out.println("Opening "+file);
                         Main.openPGM(file);
                     }
 
@@ -104,7 +103,6 @@ public class ImageGUI extends JFrame {
                     saveFile.setAcceptAllFileFilterUsed(false);
                     if (saveFile.showSaveDialog(ImageGUI.this) == JFileChooser.APPROVE_OPTION) {
                         String file = saveFile.getSelectedFile().getCanonicalPath();
-                        System.out.println("Saving "+file);
                         image.save(file);
                     }
                 } catch (Exception e) {

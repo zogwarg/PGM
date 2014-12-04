@@ -69,25 +69,27 @@ public class PGM {
      */
     public PGM histogram() {
         int[] values = histogramValues();
-        int height = 1;
+        int width = values.length; // The width of the histogram is the number of grayscales
+        int height = (3*width)/4; // 4:3 ratio for histogram
+        int maximum = 1;
         for (int v: values) { // Looking for the maximum value in histogram
-            if (v > height) {
-                height = v;
+            if (v > maximum) {
+                maximum = v;
             }
         }
-        int width = values.length; // The width of the histogram is the number of grayscales
 
         int[][] newPixelValues = new int[height][width];
         for (int j = 0; j < width; j++) {
+            int seuil = (int)(height*(1-((double)values[j]/(double)maximum)));
             for (int i = 0; i < height; i++) {
-                if (i >= height-values[j]) {
+                if (i >= seuil) {
                     newPixelValues[i][j] = maxVal;
                 }
             }
         }
 
         PGM histo = new PGM(height, width, maxVal, newPixelValues);
-        return histo.nearestNeighborResize(width*3/4, width); // Resizing to 4/3 ratio
+        return histo;
     }
 
     /**
