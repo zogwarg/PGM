@@ -1,12 +1,12 @@
 package pgm.core;
 
-import junit.framework.UnitTest;
+import junit.framework.TestCase;
 import org.junit.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-public class PGMTest extends UnitTest {
+public class PGMTest extends TestCase {
 
     PGM checkerboard;
     @Before
