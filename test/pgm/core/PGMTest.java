@@ -49,13 +49,13 @@ public class PGMTest extends TestCase {
 
     @Test
     public void testHistogram() throws Exception {
-        int [][] pgmHistogramPixels = new int[5][256];
-        for (int i = 0; i < 5; i++) {
+        int [][] pgmHistogramPixels = new int[192][256];
+        for (int i = 0; i < 192; i++) {
             for (int j = 0; j < 10; j++) {
                 pgmHistogramPixels[i][10*j + 5]=255;
             }
         }
-        PGM pgmHistogram = new PGM(5, 256, 255, pgmHistogramPixels);
+        PGM pgmHistogram = new PGM(192, 256, 255, pgmHistogramPixels);
         assertEquals(pgmHistogram, pgm.histogram());
     }
 
