@@ -36,8 +36,8 @@ public class GUI extends JFrame {
      * @param h
      */
     GUI() {
-        this.height = 320;
-        this.width = 20;
+        this.height = 20;
+        this.width = 320;
         this.actualPGM = null;
 
         this.initWindow();
@@ -54,8 +54,8 @@ public class GUI extends JFrame {
     private void initMenu() {
         // JMenuBar
         jMenuBar = new javax.swing.JMenuBar();
-        jMenuBar.setMinimumSize(new java.awt.Dimension(320, 22));
-        jMenuBar.setSize(new java.awt.Dimension(320, 20));
+        jMenuBar.setMinimumSize(new java.awt.Dimension(width, height));
+        jMenuBar.setSize(new java.awt.Dimension(width, height));
 
         // Menu File
         jMenuFile = new JMenu("File");
