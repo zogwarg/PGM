@@ -194,17 +194,31 @@ public class PGM {
         return pixelList;
     }
 
+    /**
+     * Create a new image using decimate / box resize
+     * @param newHeight height of the new image
+     * @param newWidth width of the new image
+     * @return the new image
+     */
     public PGM boxResize(int newHeight, int newWidth) {
         int[][] newPixelValues = new int[newHeight][newWidth];
         for (int i = 0; i < newHeight; i++) {
             for (int j = 0; j < newWidth; j++) {
-                newPixelValues[i][j] = getValue(newHeight, newWidth, i, j);
+                newPixelValues[i][j] = getValueBox(newHeight, newWidth, i, j);
             }
         }
         return new PGM(newHeight, newWidth, maxVal, newPixelValues);
     }
 
-    private int getValue(int newHeight, int newWidth, int row, int col) {
+    /**
+     * Returns the value of the pixel of the new image using decimate / box resize
+     * @param newHeight height of the new image
+     * @param newWidth width of the new image
+     * @param row the row of the pixel to be colored
+     * @param col the col of the pixel to be colored
+     * @return the value of that pixel
+     */
+    private int getValueBox(int newHeight, int newWidth, int row, int col) {
         // Integer division, equivalent to floor
         int minRow = (row * height) / newHeight;
         int minCol = (col * width ) / newWidth;
@@ -215,9 +229,9 @@ public class PGM {
         int value = 0;
         int area = 0;
         for (int i = minRow; i < maxRow; i++){
-            int sizeI = getRatio(i,row,height,newHeight);
+            int sizeI = PGM.getRatio(i,row,height,newHeight);
             for (int j = minCol; j < maxCol; j++) {
-                int size = sizeI * getRatio(j,col,width,newWidth);
+                int size = sizeI * PGM.getRatio(j,col,width,newWidth);
                 value += pixelValues[i][j] * size;
                 area += size;
             }
@@ -225,9 +239,16 @@ public class PGM {
         return value/area;
     }
 
-    // todo javadoc
-    // returns a size object of overlab between two pixels. value between 0 and newSize
-    private int getRatio(int oldVal, int newVal, int oldSize, int newSize) {
+    /**
+     * Static helper method to help calculate the overlap ratio of two pixels.
+     * This calculates the overlap ratio over one coordinate
+     * @param oldVal the coordinate in the original image
+     * @param newVal the coordinate in the final image
+     * @param oldSize the coordinate's max size in the original image
+     * @param newSize the coordinate's max size in the final image
+     * @return the overlap times newSize
+     */
+    private static int getRatio(int oldVal, int newVal, int oldSize, int newSize) {
         if (oldVal * newSize < newVal * oldSize) {
             return (newSize - newVal * oldSize + oldVal * newSize);
         } else if (oldVal * newSize > (newVal+1) * oldSize) {
@@ -237,6 +258,60 @@ public class PGM {
         }
     }
 
+    /**
+     * Create a new image using the bi-linear interpolation algorithm
+     * @param newHeight height of the new image
+     * @param newWidth width of the new image
+     * @return the new image
+     */
+    public PGM bilinearResize(int newHeight, int newWidth) {
+        int[][] newPixelValues = new int[newHeight][newWidth];
+        for (int i = 0; i < newHeight; i++) {
+            for (int j = 0; j < newWidth; j++) {
+                newPixelValues[i][j] = getValueBilinear(newHeight, newWidth, i, j);
+            }
+        }
+        return new PGM(newHeight, newWidth, maxVal, newPixelValues);
+    }
+
+    /**
+     * Returns the value of the new pixel using bi-linear interpolation
+     * @param newHeight height of the new image
+     * @param newWidth width of the new image
+     * @param row the row of the pixel to be colored
+     * @param col the col of the pixel to be colored
+     * @return the value of that pixel
+     */
+    private int getValueBilinear(int newHeight, int newWidth, int row, int col) {
+        int i0 = (row * height) / newHeight;
+        int j0 = (col * width ) / newWidth;
+        long diNewHeight = row * height - i0 * newHeight;
+        long djNewWidth  = col * width  - j0 * newWidth;
+        long sum = 0;
+        // nH * nW * (1-di) * (1-dj)
+        sum += (newHeight - diNewHeight) * (newWidth - djNewWidth) * getValue(i0,j0);
+        // nH * nW * (1-di) * dj
+        sum += (newHeight - diNewHeight) * djNewWidth * getValue(i0,j0 + 1);
+        // nH * nW * di * (1-dj)
+        sum += diNewHeight * (newWidth - djNewWidth) * getValue(i0+1,j0);
+        // nH * nW * di * dj
+        sum += diNewHeight * djNewWidth * getValue(i0 + 1,j0 + 1);
+        return (int) (sum / (newHeight * newWidth));
+    }
+
+    /**
+     * Safe accessor for pixelValues
+     * @param row the row to be accessed
+     * @param col the column to be accessed
+     * @return pixelValues[row][col] if exists, 0 otherwise
+     */
+    private int getValue(int row,int col) {
+        if (row >= height || col >= width || row < 0 || col < 0) {
+            return 0;
+        } else {
+            return pixelValues[row][col];
+        }
+    }
     /**
      * Simplest and fastest resize, but image quality suffers
      * @param newWidth width of the new image
