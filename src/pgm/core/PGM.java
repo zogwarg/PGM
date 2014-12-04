@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -110,11 +111,10 @@ public class PGM {
      * @param colorNum the number of target colors
      * @return
      */
-    public PGM posterize(int colorNum) {
+    public PGM posterize(int colorNum) throws InvalidParameterException {
+        if ( colorNum<1 || colorNum>maxVal ) throw new InvalidParameterException("The parameter should be between 1 and " + maxVal);
         int countPixel = 0;
         int numPixel = width * height;
-
-        //List<Integer> slicePoints = new ArrayList<Integer>();
 
         int[] histogram = histogramValues();
         int length = histogram.length;
@@ -124,7 +124,8 @@ public class PGM {
 
         for (int i = 0; i < length; i++) {
             countPixel += histogram[i]; // Adding the Population for I_th color value in Histogram
-            valueMap[i] = curVal;
+            valueMap[i] = (maxVal*curVal)/colorNum;
+
             if (countPixel>=numPixel/colorNum) {
                 countPixel -= numPixel/colorNum; // Resetting the count when a population slice is reached
                 curVal++;
