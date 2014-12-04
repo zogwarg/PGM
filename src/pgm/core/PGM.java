@@ -87,7 +87,7 @@ public class PGM {
         }
 
         PGM histo = new PGM(height, width, maxVal, newPixelValues);
-        return histo.nearestNeighborResize(width*9/16, width);
+        return histo.nearestNeighborResize(width*3/4, width); // Resizing to 4/3 ratio
     }
 
     /**
@@ -144,6 +144,21 @@ public class PGM {
         }
 
         return new PGM(height,width,maxVal,newPixelValues);
+    }
+
+    /**
+     * Inverse color of the image
+     * @return PGM inversed image
+     */
+    public PGM inverse() {
+        int[][] newPixelValues = new int[height][width];
+        for (int i = 0; i < height; i++) {
+            for(int j=0; j< width; j++) {
+                newPixelValues[i][j] = maxVal - pixelValues[i][j];
+            }
+        }
+
+        return new PGM(height, width, maxVal, newPixelValues);
     }
 
     /**
