@@ -91,6 +91,8 @@ public class PGM {
 
     /**
      * Apply a threshold filter on a opened PGM file
+     * If the pixel is geq than thres, paint it white
+     * Else paint it black
      * @param thresh affect the threshold for comparison
      * @return black and white PGM file thresholded
      */
