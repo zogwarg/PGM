@@ -229,9 +229,9 @@ public class PGM {
         int value = 0;
         int area = 0;
         for (int i = minRow; i < maxRow; i++){
-            int sizeI = PGM.getRatio(i,row,height,newHeight);
+            int sizeI = PGM.getRatio(i, row, height, newHeight);
             for (int j = minCol; j < maxCol; j++) {
-                int size = sizeI * PGM.getRatio(j,col,width,newWidth);
+                int size = sizeI * PGM.getRatio(j, col, width, newWidth);
                 value += pixelValues[i][j] * size;
                 area += size;
             }
@@ -369,5 +369,31 @@ public class PGM {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PGM pgm = (PGM) o;
+
+        if (height != pgm.height) return false;
+        if (maxVal != pgm.maxVal) return false;
+        if (width != pgm.width) return false;
+        int[][] pgmPV = pgm.getPixelValues();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (pixelValues[i][j] != pgmPV[i][j]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public int[][] getPixelValues() {
+        return pixelValues;
     }
 }
