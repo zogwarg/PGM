@@ -3,6 +3,8 @@ package pgm.core;
 import junit.framework.TestCase;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.junit.Before;
 public class PGMTest extends TestCase {
@@ -64,7 +66,32 @@ public class PGMTest extends TestCase {
 
     @Test
     public void testPosterize() throws Exception {
-
+        PGM postpgm3 = new PGM(10, 5, 255, new int[][] {
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                { 85,  85,  85,  85,  85},
+                { 85,  85,  85,  85,  85},
+                { 85,  85,  85,  85,  85},
+                {170, 170, 170, 170, 170},
+                {170, 170, 170, 170, 170},
+                {170, 170, 170, 170, 170}
+        });
+        PGM postpgm1 = new PGM(10, 5, 255, new int[][] {
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+                {  0,   0,   0,   0,   0},
+        });
+        assertEquals(postpgm3, pgm.posterize(3));
+        assertEquals(postpgm1, pgm.posterize(1));
     }
 
     @Test
