@@ -21,13 +21,7 @@ public class GUI extends JFrame {
     private JMenuBar jMenuBar;
     private JMenu jMenuFile;
     private JMenuItem jFileOpen;
-    private JMenuItem jFileSave;
     private JMenuItem jFileExit;
-    private JMenu jMenuFilter;
-    private JMenuItem jFilterHistogram;
-    private JMenuItem jFilterThreshold;
-    private JMenuItem jFilterThresholdMean;
-    private JMenuItem jFilterThresholdMedian;
     private JMenu jMenuAbout;
     private JMenuItem jAboutInfo;
 
@@ -44,7 +38,7 @@ public class GUI extends JFrame {
     }
 
     private void initWindow() {
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Super PGM Bros Java Edition");
         setPreferredSize(new java.awt.Dimension(width, height));
     }
@@ -68,27 +62,10 @@ public class GUI extends JFrame {
                     if (openFile.showOpenDialog(GUI.this) == JFileChooser.APPROVE_OPTION) {
                         String file = openFile.getSelectedFile().getCanonicalPath();
                         System.out.println(file);
+                        dispose(); // We close the actual window
                         Main.openPGM(file);
                     }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        // Save
-        jFileSave = new JMenuItem("Save");
-        jFileSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                try {
-                    JFileChooser saveFile = new JFileChooser(this.getClass().getClassLoader().getResource("").getPath());
-                    saveFile.addChoosableFileFilter(new FileNameExtensionFilter(".pgm", "pgm"));
-                    saveFile.setAcceptAllFileFilterUsed(false);
-                    if (saveFile.showSaveDialog(GUI.this) == JFileChooser.APPROVE_OPTION) {
-                        // TODO Handle saving file
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -100,46 +77,8 @@ public class GUI extends JFrame {
         jFileExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO exit the program
-            }
-        });
-
-        // Menu File
-        jMenuFilter = new JMenu("Apply filter");
-
-        // Histogram
-        jFilterHistogram = new JMenuItem("Histogram");
-        jFilterHistogram.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO apply and open histogram
-            }
-        });
-
-        // Threshold
-        jFilterThreshold = new JMenuItem("Threshold");
-        jFilterThreshold.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO ask for value and apply and open Treshsold
-            }
-        });
-
-        // Mean Threshold
-        jFilterThresholdMean = new JMenuItem("Mean Threshold");
-        jFilterThresholdMean.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO apply and open Mean Treshsold
-            }
-        });
-
-        // Median Threshold
-        jFilterThresholdMedian = new JMenuItem("Median Threshold");
-        jFilterThresholdMedian.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO apply and open Median Treshsold
+                // Crude but effective
+                System.exit(0);
             }
         });
 
@@ -155,21 +94,13 @@ public class GUI extends JFrame {
 
         // Adding items to file menu
         jMenuFile.add(jFileOpen);
-        jMenuFile.add(jFileSave);
         jMenuFile.add(jFileExit);
-
-        // Adding items to filters menu
-        jMenuFilter.add(jFilterHistogram);
-        jMenuFilter.add(jFilterThreshold);
-        jMenuFilter.add(jFilterThresholdMean);
-        jMenuFilter.add(jFilterThresholdMedian);
 
         // Adding items to about menu
         jMenuAbout.add(jAboutInfo);
 
         // Adding Menus to Bar
         jMenuBar.add(jMenuFile);
-        jMenuBar.add(jMenuFilter);
         jMenuBar.add(jMenuAbout);
 
         // Ajout du menu a la JFrame
