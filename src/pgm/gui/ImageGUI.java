@@ -34,6 +34,7 @@ public class ImageGUI extends JFrame {
     private JMenuItem jTreatmentResizeBilinear;
 
     private JMenu jMenuFilter;
+    private JMenuItem jFilterInverse;
     private JMenuItem jFilterThreshold;
     private JMenuItem jFilterThresholdMean;
     private JMenuItem jFilterThresholdMedian;
@@ -172,6 +173,19 @@ public class ImageGUI extends JFrame {
             }
         });
 
+        // Inverse
+        jFilterInverse = new JMenuItem("Inverse colors");
+        jFilterInverse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int value = image.medianValue();
+                PGM out = image.inverse();
+                ImageGUI outGUI = new ImageGUI(out, "Inverse");
+                outGUI.setResizable(false);
+                outGUI.setVisible(true);
+            }
+        });
+
         // Posterize
         jFilterPosterize = new JMenuItem("Posterize");
         jFilterPosterize.addActionListener(new ActionListener() {
@@ -239,6 +253,7 @@ public class ImageGUI extends JFrame {
         jMenuTreatment.add(jTreatmentResizeBilinear);
 
         // Adding items to filters menu
+        jMenuFilter.add(jFilterInverse);
         jMenuFilter.add(jFilterPosterize);
         jMenuFilter.add(jFilterThreshold);
         jMenuFilter.add(jFilterThresholdMean);
