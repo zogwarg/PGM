@@ -273,7 +273,6 @@ public class ImageGUI extends JFrame {
     }
 
     private void loadImg() {
-        // fixme loading img, in PGM canvas
         canvas = new PGMCanvas(image);
         this.getContentPane().add(canvas);
     }
