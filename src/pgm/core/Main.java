@@ -10,17 +10,4 @@ public class Main {
         GUI menus = new GUI();
     }
 
-    public static void openPGM(String filepath) {
-        PGM pgm = null;
-        try {
-            Loader loader = new Loader(filepath);
-            pgm = loader.loadPGM();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        if (pgm != null) {
-            ImageGUI imgDisplay = new ImageGUI(pgm, filepath);
-        }
-    }
 }

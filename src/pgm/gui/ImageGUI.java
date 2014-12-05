@@ -1,5 +1,6 @@
 package pgm.gui;
 
+import pgm.core.Loader;
 import pgm.core.Main;
 import pgm.core.PGM;
 
@@ -12,23 +13,17 @@ import java.awt.event.ActionListener;
 /**
  * Created by thomas on 04/12/14.
  */
-public class ImageGUI extends JFrame {
+public class ImageGUI extends GUI {
     private final static int MIN_WIDTH = 200;
     private final static int MIN_HEIGHT = 100;
 
-    private int height;
-    private int width;
     private PGM image;
     private String filename;
     private PGMCanvas canvas;
 
     // Menu
-    private JMenuBar jMenuBar;
-    private JMenu jMenuFile;
-    private JMenuItem jFileOpen;
     private JMenuItem jFileSave;
     private JMenuItem jFileClose;
-    private JMenuItem jFileExit;
 
     private JMenu jMenuTreatment;
     private JMenuItem jTreatmentHistogram;
@@ -43,23 +38,13 @@ public class ImageGUI extends JFrame {
     private JMenuItem jFilterThresholdMedian;
     private JMenuItem jFilterPosterize;
 
-    private JMenu jMenuAbout;
-    private JMenuItem jAboutInfo;
-
     /**
      * Constructor for opening result
      * @param image
      */
     public ImageGUI(PGM image, String filename) {
-        width = image.getWidth();
-        height = image.getHeight()+43;
-
-        if (width < MIN_WIDTH) {
-            width = MIN_WIDTH;
-        }
-        if (height < MIN_HEIGHT) {
-            height = MIN_HEIGHT;
-        }
+        this.width = Math.max(image.getWidth(), MIN_WIDTH);
+        this.height = Math.max(image.getHeight()+43, MIN_HEIGHT);
 
         this.image = image;
         this.filename = filename;
@@ -68,6 +53,8 @@ public class ImageGUI extends JFrame {
         this.initMenu();
         this.loadImg();
 
+        // Ajout du menu a la JFrame
+        setJMenuBar(jMenuBar);
         pack();
     }
 
@@ -76,45 +63,22 @@ public class ImageGUI extends JFrame {
         setTitle(filename);
         setPreferredSize(new Dimension(width, height));
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
-
         setResizable(true);
         setVisible(true);
     }
 
-    private void initMenu() {
+    protected void initMenu() {
+        super.initMenu();
+
         // JMenuBar
-        jMenuBar = new javax.swing.JMenuBar();
-
-        // Menu File
-        jMenuFile = new JMenu("File");
-
-        // Open
-        jFileOpen = new JMenuItem("Open file");
-        jFileOpen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                try {
-                    JFileChooser openFile = new JFileChooser(this.getClass().getClassLoader().getResource("").getPath());
-                    openFile.addChoosableFileFilter(new FileNameExtensionFilter(".pgm", "pgm"));
-                    openFile.setAcceptAllFileFilterUsed(false);
-                    if (openFile.showOpenDialog(ImageGUI.this) == JFileChooser.APPROVE_OPTION) {
-                        String file = openFile.getSelectedFile().getCanonicalPath();
-                        Main.openPGM(file);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
+        jMenuBar = new JMenuBar();
         // Save
         jFileSave = new JMenuItem("Save file");
         jFileSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
-                    JFileChooser saveFile = new JFileChooser(this.getClass().getClassLoader().getResource("").getPath());
+                    JFileChooser saveFile = new JFileChooser(".");
                     saveFile.addChoosableFileFilter(new FileNameExtensionFilter(".pgm", "pgm"));
                     saveFile.setAcceptAllFileFilterUsed(false);
                     if (saveFile.showSaveDialog(ImageGUI.this) == JFileChooser.APPROVE_OPTION) {
@@ -133,16 +97,6 @@ public class ImageGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 dispose();
-            }
-        });
-
-        // Exit
-        jFileExit = new JMenuItem("Exit program");
-        jFileExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            // Crude but effective
-            System.exit(0);
             }
         });
 
@@ -168,9 +122,9 @@ public class ImageGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HeightWidthPopup myPanel = new HeightWidthPopup();
-                int width = image.getWidth();
-                int height = image.getHeight();
                 while(true) {
+                    int width;
+                    int height;
                     int result = JOptionPane.showConfirmDialog(null, myPanel,
                             "Please Enter Width and Height Values", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                     if (result == JOptionPane.OK_OPTION) {
@@ -200,9 +154,9 @@ public class ImageGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HeightWidthPopup myPanel = new HeightWidthPopup();
-                int width = image.getWidth();
-                int height = image.getHeight();
                 while(true) {
+                    int width;
+                    int height;
                     int result = JOptionPane.showConfirmDialog(null, myPanel,
                             "Please Enter Width and Height Values", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                     if (result == JOptionPane.OK_OPTION) {
@@ -215,9 +169,7 @@ public class ImageGUI extends JFrame {
                         }
                         // If valid size
                         if (width > 0 && height > 0) {
-                            ImageGUI imageGUI = new ImageGUI(image.boxResize(height,width), filename+"_boxResize");
-                            imageGUI.setResizable(false);
-                            imageGUI.setVisible(true);
+                            ImageGUI imageGUI = new ImageGUI(image.boxResize(height, width), filename+"_boxResize");
                             break;
                         }
                     } else if (result == JOptionPane.CANCEL_OPTION) {
@@ -232,9 +184,9 @@ public class ImageGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HeightWidthPopup myPanel = new HeightWidthPopup();
-                int width = image.getWidth();
-                int height = image.getHeight();
                 while(true) {
+                    int height;
+                    int width;
                     int result = JOptionPane.showConfirmDialog(null, myPanel,
                             "Please Enter Width and Height Values", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                     if (result == JOptionPane.OK_OPTION) {
@@ -247,7 +199,7 @@ public class ImageGUI extends JFrame {
                         }
                         // If valid size
                         if (width > 0 && height > 0) {
-                            ImageGUI imageGUI = new ImageGUI(image.bilinearResize(height,width), filename+"_blResize");
+                            ImageGUI imageGUI = new ImageGUI(image.bilinearResize(height, width), filename+"_blResize");
                             imageGUI.setResizable(false);
                             imageGUI.setVisible(true);
                             break;
@@ -277,7 +229,31 @@ public class ImageGUI extends JFrame {
         jFilterPosterize.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO ask for value and apply and open Posterize
+                JPanel myPanel = new JPanel();
+                JTextField sliceField = new JTextField(5);
+                myPanel.add(new JLabel("Number of colors:"));
+                myPanel.add(sliceField);
+                int slices;
+                while(true) {
+                    int result = JOptionPane.showConfirmDialog(null, myPanel,
+                            "Please Enter the number of colors", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (result == JOptionPane.OK_OPTION) {
+                        try {
+                            slices = Integer.parseInt(sliceField.getText());
+                        } catch (NumberFormatException nfe) {
+                            slices = 0;
+                        }
+                        // If valid size
+                        if (slices > 0) {
+                            ImageGUI imageGUI = new ImageGUI(image.posterize(slices), filename+"_posterize");
+                            imageGUI.setResizable(false);
+                            imageGUI.setVisible(true);
+                            break;
+                        }
+                    } else if (result == JOptionPane.CANCEL_OPTION) {
+                        break;
+                    }
+                }
             }
         });
 
@@ -286,7 +262,31 @@ public class ImageGUI extends JFrame {
         jFilterThreshold.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO ask for value and apply and open Treshsold
+                JPanel myPanel = new JPanel();
+                JTextField sliceField = new JTextField(5);
+                myPanel.add(new JLabel("Threshold:"));
+                myPanel.add(sliceField);
+                int threshold;
+                while(true) {
+                    int result = JOptionPane.showConfirmDialog(null, myPanel,
+                            "Please Enter the value of the threshold", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (result == JOptionPane.OK_OPTION) {
+                        try {
+                            threshold = Integer.parseInt(sliceField.getText());
+                        } catch (NumberFormatException nfe) {
+                            threshold = 0;
+                        }
+                        // If valid size
+                        if (threshold > 0) {
+                            ImageGUI imageGUI = new ImageGUI(image.threshold(threshold), filename + "_threshold");
+                            imageGUI.setResizable(false);
+                            imageGUI.setVisible(true);
+                            break;
+                        }
+                    } else if (result == JOptionPane.CANCEL_OPTION) {
+                        break;
+                    }
+                }
             }
         });
 
@@ -327,10 +327,8 @@ public class ImageGUI extends JFrame {
         });
 
         // Adding items to file menu
-        jMenuFile.add(jFileOpen);
-        jMenuFile.add(jFileSave);
-        jMenuFile.add(jFileClose);
-        jMenuFile.add(jFileExit);
+        jMenuFile.add(jFileSave, 1);
+        jMenuFile.add(jFileClose, 2);
 
         // Adding items to treatment menu
         jMenuTreatment.add(jTreatmentHistogram);
@@ -345,21 +343,35 @@ public class ImageGUI extends JFrame {
         jMenuFilter.add(jFilterThresholdMean);
         jMenuFilter.add(jFilterThresholdMedian);
 
-        // Adding items to about menu
-        jMenuAbout.add(jAboutInfo);
 
         // Adding Menus to Bar
         jMenuBar.add(jMenuFile);
         jMenuBar.add(jMenuTreatment);
         jMenuBar.add(jMenuFilter);
         jMenuBar.add(jMenuAbout);
-
-        // Ajout du menu a la JFrame
-        setJMenuBar(jMenuBar);
     }
 
     private void loadImg() {
         canvas = new PGMCanvas(image);
         this.getContentPane().add(canvas);
+    }
+
+    public static <T> T last(T[] array) {
+        return array[array.length - 1];
+    }
+
+    public static void openPGM(String filepath) {
+        PGM pgm = null;
+        try {
+            Loader loader = new Loader(filepath);
+            pgm = loader.loadPGM();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        if (pgm != null) {
+            ImageGUI imgDisplay = new ImageGUI(pgm, last(filepath.split("/")));
+        }
+
     }
 }
