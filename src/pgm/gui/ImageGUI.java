@@ -153,7 +153,31 @@ public class ImageGUI extends JFrame {
         jTreatmentResizeNearest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO ask for value and apply and open Treshsold
+                HeightWidthPopup myPanel = new HeightWidthPopup();
+                int width = image.getWidth();
+                int height = image.getHeight();
+                while(true) {
+                    int result = JOptionPane.showConfirmDialog(null, myPanel,
+                            "Please Enter Width and Height Values", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (result == JOptionPane.OK_OPTION) {
+                        try {
+                            width = Integer.parseInt(myPanel.getWidthField().getText());
+                            height = Integer.parseInt(myPanel.getHeightField().getText());
+                        } catch (NumberFormatException nfe) {
+                            width = 0;
+                            height = 0;
+                        }
+                        // If valid size
+                        if (width > 0 && height > 0) {
+                            ImageGUI imageGUI = new ImageGUI(image.nearestNeighborResize(height,width), filename+"_nnResize");
+                            imageGUI.setResizable(false);
+                            imageGUI.setVisible(true);
+                            break;
+                        }
+                    } else if (result == JOptionPane.CANCEL_OPTION) {
+                        break;
+                    }
+                }
             }
         });
 
@@ -161,7 +185,31 @@ public class ImageGUI extends JFrame {
         jTreatmentResizeBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO ask for value and apply and open Treshsold
+                HeightWidthPopup myPanel = new HeightWidthPopup();
+                int width = image.getWidth();
+                int height = image.getHeight();
+                while(true) {
+                    int result = JOptionPane.showConfirmDialog(null, myPanel,
+                            "Please Enter Width and Height Values", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (result == JOptionPane.OK_OPTION) {
+                        try {
+                            width = Integer.parseInt(myPanel.getWidthField().getText());
+                            height = Integer.parseInt(myPanel.getHeightField().getText());
+                        } catch (NumberFormatException nfe) {
+                            width = 0;
+                            height = 0;
+                        }
+                        // If valid size
+                        if (width > 0 && height > 0) {
+                            ImageGUI imageGUI = new ImageGUI(image.boxResize(height,width), filename+"_boxResize");
+                            imageGUI.setResizable(false);
+                            imageGUI.setVisible(true);
+                            break;
+                        }
+                    } else if (result == JOptionPane.CANCEL_OPTION) {
+                        break;
+                    }
+                }
             }
         });
 
@@ -169,7 +217,31 @@ public class ImageGUI extends JFrame {
         jTreatmentResizeBilinear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO ask for value and apply and open Treshsold
+                HeightWidthPopup myPanel = new HeightWidthPopup();
+                int width = image.getWidth();
+                int height = image.getHeight();
+                while(true) {
+                    int result = JOptionPane.showConfirmDialog(null, myPanel,
+                            "Please Enter Width and Height Values", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (result == JOptionPane.OK_OPTION) {
+                        try {
+                            width = Integer.parseInt(myPanel.getWidthField().getText());
+                            height = Integer.parseInt(myPanel.getHeightField().getText());
+                        } catch (NumberFormatException nfe) {
+                            width = 0;
+                            height = 0;
+                        }
+                        // If valid size
+                        if (width > 0 && height > 0) {
+                            ImageGUI imageGUI = new ImageGUI(image.bilinearResize(height,width), filename+"_blResize");
+                            imageGUI.setResizable(false);
+                            imageGUI.setVisible(true);
+                            break;
+                        }
+                    } else if (result == JOptionPane.CANCEL_OPTION) {
+                        break;
+                    }
+                }
             }
         });
 
