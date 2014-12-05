@@ -8,8 +8,6 @@ public class Main {
         // Menu GUI and Image GUI should be distinct, like GIMP
 
         GUI menus = new GUI();
-        menus.setVisible(true);
-        menus.setResizable(false);
     }
 
     public static void openPGM(String filepath) {
@@ -23,8 +21,6 @@ public class Main {
 
         if (pgm != null) {
             ImageGUI imgDisplay = new ImageGUI(pgm, filepath);
-            imgDisplay.setVisible(true);
-            imgDisplay.setResizable(false);
         }
     }
 }
