@@ -49,13 +49,13 @@ public class PGMTest extends TestCase {
 
     @Test
     public void testHistogram() throws Exception {
-        int [][] pgmHistogramPixels = new int[5][256];
-        for (int i = 0; i < 5; i++) {
+        int [][] pgmHistogramPixels = new int[192][256];
+        for (int i = 0; i < 192; i++) {
             for (int j = 0; j < 10; j++) {
                 pgmHistogramPixels[i][10*j + 5]=255;
             }
         }
-        PGM pgmHistogram = new PGM(5, 256, 255, pgmHistogramPixels);
+        PGM pgmHistogram = new PGM(192, 256, 255, pgmHistogramPixels);
         assertEquals(pgmHistogram, pgm.histogram());
     }
 
@@ -89,32 +89,49 @@ public class PGMTest extends TestCase {
 
     @Test
     public void testPosterize() throws Exception {
-        PGM postpgm3 = new PGM(10, 5, 255, new int[][] {
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                { 85,  85,  85,  85,  85},
-                { 85,  85,  85,  85,  85},
-                { 85,  85,  85,  85,  85},
-                {170, 170, 170, 170, 170},
-                {170, 170, 170, 170, 170},
-                {170, 170, 170, 170, 170}
+        PGM pgmPost1 = new PGM(10, 5, 255, new int[][] {
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
         });
-        PGM postpgm1 = new PGM(10, 5, 255, new int[][] {
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
-                {  0,   0,   0,   0,   0},
+        PGM pgmPost2 = new PGM(10, 5, 255, new int[][] {
+                {25, 25, 25, 25, 25},
+                {25, 25, 25, 25, 25},
+                {25, 25, 25, 25, 25},
+                {25, 25, 25, 25, 25},
+                {25, 25, 25, 25, 25},
+                {75, 75, 75, 75, 75},
+                {75, 75, 75, 75, 75},
+                {75, 75, 75, 75, 75},
+                {75, 75, 75, 75, 75},
+                {75, 75, 75, 75, 75}
         });
-        assertEquals(postpgm3, pgm.posterize(3));
-        assertEquals(postpgm1, pgm.posterize(1));
+        PGM pgmPost3 = new PGM(10, 5, 255, new int[][] {
+                {15, 15, 15, 15, 15},
+                {15, 15, 15, 15, 15},
+                {15, 15, 15, 15, 15},
+                {15, 15, 15, 15, 15},
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
+                {45, 45, 45, 45, 45},
+                {75, 75, 75, 75, 75},
+                {75, 75, 75, 75, 75},
+                {75, 75, 75, 75, 75},
+        });
+
+        assertEquals(pgmPost1,pgm.posterize(1));
+        assertEquals(pgmPost2,pgm.posterize(2));
+        assertEquals(pgmPost3,pgm.posterize(3));
+        assertEquals(pgm, pgm.posterize(255));
+        assertEquals(pgm,pgm.posterize(10));
+
     }
 
     @Test
@@ -135,12 +152,12 @@ public class PGMTest extends TestCase {
 
     @Test
     public void testMeanValue() throws Exception {
-
+        assertEquals(50,pgm.meanValue());
     }
 
     @Test
     public void testMedianValue() throws Exception {
-
+        assertEquals(55,pgm.medianValue());
     }
 
     @Test
@@ -160,6 +177,8 @@ public class PGMTest extends TestCase {
 
     @Test
     public void testSave() throws Exception {
-
+        pgm.save("pgm_out/pgm-test-save.pgm");
+        PGM savedPGM = new Loader("pgm_out/pgm-test-save.pgm").loadPGM();
+        assertEquals(pgm,savedPGM);
     }
 }

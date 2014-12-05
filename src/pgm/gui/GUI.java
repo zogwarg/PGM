@@ -27,8 +27,9 @@ public class GUI extends JFrame {
      * Create new windows without any PGM file
      */
     public GUI() {
-        this.height = 43;
         this.width = 320;
+        this.height = 240;
+
 
         this.initWindow();
         this.initMenu();
@@ -39,6 +40,8 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Super PGM Bros Java Edition");
         setPreferredSize(new java.awt.Dimension(width, height));
+        setResizable(false);
+        setVisible(true);
     }
 
     private void initMenu() {

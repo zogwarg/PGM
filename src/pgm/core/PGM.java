@@ -69,25 +69,27 @@ public class PGM {
      */
     public PGM histogram() {
         int[] values = histogramValues();
-        int height = 1;
+        int width = values.length; // The width of the histogram is the number of grayscales
+        int height = (3*width)/4; // 4:3 ratio for histogram
+        int maximum = 1;
         for (int v: values) { // Looking for the maximum value in histogram
-            if (v > height) {
-                height = v;
+            if (v > maximum) {
+                maximum = v;
             }
         }
-        int width = values.length; // The width of the histogram is the number of grayscales
 
         int[][] newPixelValues = new int[height][width];
         for (int j = 0; j < width; j++) {
+            int seuil = (int)(height*(1-((double)values[j]/(double)maximum)));
             for (int i = 0; i < height; i++) {
-                if (i >= height-values[j]) {
+                if (i >= seuil) {
                     newPixelValues[i][j] = maxVal;
                 }
             }
         }
 
         PGM histo = new PGM(height, width, maxVal, newPixelValues);
-        return histo.nearestNeighborResize(width*3/4, width); // Resizing to 4/3 ratio
+        return histo;
     }
 
     /**
@@ -111,27 +113,38 @@ public class PGM {
 
     /**
      * Reduces the number of different colors in an image by looking at the histogram
-     * @param colorNum the number of target colors
-     * @return
+     * Making slices of approximately equal sized populations, and then taking the lower median value
+     * of each group as a color value
+     * @param colorNum the number of target colors, should be between 1 and maxVal
+     * @return PGM posterized image
      */
     public PGM posterize(int colorNum) throws InvalidParameterException {
-        if ( colorNum<1 || colorNum>maxVal ) throw new InvalidParameterException("The parameter should be between 1 and " + maxVal);
+        if ( colorNum<1 || colorNum>maxVal ) throw new IllegalArgumentException("The number of Target colors should be between 1 and " + maxVal);
         int countPixel = 0;
         int numPixel = width * height;
 
         int[] histogram = histogramValues();
         int length = histogram.length;
 
-        int[] valueMap = new int[length];
-        int curVal = 0;
+        int[] sliceMap = new int[length];
+        int curSlice = 0;
+
+        int[] sliceToVal = new int[colorNum];
+        boolean colorToBeFound = true;
 
         for (int i = 0; i < length; i++) {
             countPixel += histogram[i]; // Adding the Population for I_th color value in Histogram
-            valueMap[i] = (maxVal*curVal)/colorNum;
+            sliceMap[i] = (curSlice < colorNum ? curSlice : colorNum - 1); // Ugly (?:) , needed when colorNum slightly under the number of colors;
+
+            if (countPixel>=numPixel/(2*colorNum) && colorToBeFound && curSlice < colorNum) {
+                sliceToVal[curSlice] = i;
+                colorToBeFound = false;
+            }
 
             if (countPixel>=numPixel/colorNum) {
                 countPixel -= numPixel/colorNum; // Resetting the count when a population slice is reached
-                curVal++;
+                curSlice++;
+                colorToBeFound = true;
             }
         }
 
@@ -139,7 +152,7 @@ public class PGM {
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                newPixelValues[i][j] = valueMap[pixelValues[i][j]];
+                newPixelValues[i][j] = sliceToVal[sliceMap[pixelValues[i][j]]];
             }
         }
 

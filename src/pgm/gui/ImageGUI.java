@@ -13,6 +13,9 @@ import java.awt.event.ActionListener;
  * Created by thomas on 04/12/14.
  */
 public class ImageGUI extends JFrame {
+    private final static int MIN_WIDTH = 200;
+    private final static int MIN_HEIGHT = 100;
+
     private int height;
     private int width;
     private PGM image;
@@ -48,21 +51,34 @@ public class ImageGUI extends JFrame {
      * @param image
      */
     public ImageGUI(PGM image, String filename) {
-        this.height = image.getHeight();
-        this.width = image.getWidth();
+        width = image.getWidth();
+        height = image.getHeight()+43;
+
+        if (width < MIN_WIDTH) {
+            width = MIN_WIDTH;
+        }
+        if (height < MIN_HEIGHT) {
+            height = MIN_HEIGHT;
+        }
+
         this.image = image;
         this.filename = filename;
 
         this.initWindow();
         this.initMenu();
         this.loadImg();
+
         pack();
     }
 
     private void initWindow() {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(filename);
-        setPreferredSize(new java.awt.Dimension(width, height+20));
+        setPreferredSize(new Dimension(width, height));
+        setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
+
+        setResizable(true);
+        setVisible(true);
     }
 
     private void initMenu() {
@@ -83,7 +99,6 @@ public class ImageGUI extends JFrame {
                     openFile.setAcceptAllFileFilterUsed(false);
                     if (openFile.showOpenDialog(ImageGUI.this) == JFileChooser.APPROVE_OPTION) {
                         String file = openFile.getSelectedFile().getCanonicalPath();
-                        System.out.println("Opening "+file);
                         Main.openPGM(file);
                     }
 
@@ -104,7 +119,6 @@ public class ImageGUI extends JFrame {
                     saveFile.setAcceptAllFileFilterUsed(false);
                     if (saveFile.showSaveDialog(ImageGUI.this) == JFileChooser.APPROVE_OPTION) {
                         String file = saveFile.getSelectedFile().getCanonicalPath();
-                        System.out.println("Saving "+file);
                         image.save(file);
                     }
                 } catch (Exception e) {
